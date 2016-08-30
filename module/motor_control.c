@@ -17,9 +17,11 @@ MODULE_INIT(motor_control)
 static void controller(signed int reference, signed int state, unsigned char* left, unsigned char* right)
 {
   signed int error = reference - state;
+  DEBUG_OUTPUT("MC: e = %d\n", error);
   // P controller
   *left = 180 + Kl * error;
   *right = 180 + Kr * error;
+  DEBUG_OUTPUT("MC: u = [ %d %d ]\n", *left, *right);
 }
 
 MODULE_EXECUTE(motor_control)
