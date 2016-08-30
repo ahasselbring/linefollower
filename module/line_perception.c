@@ -1,6 +1,6 @@
 #include "line_perception.h"
 
-#define DARK_THRESHOLD 200
+#define DARK_THRESHOLD 100
 #define MIN_WHITE_LINE 950
 #define MAX_BLACK_LINE 850
 #define CALIBRATION_TIMEOUT 20
