@@ -1,13 +1,13 @@
 #include "modeling.h"
 
-#define LINE_SENSOR_DISTANCE 10000
+#define LINE_SENSOR_DISTANCE 100
 #define P0 (100 * 100)
-#define Bl 1
+#define Bl -1
 #define Br 1
 #define Q 10 * 10
 #define Rll 1
 #define Rrr 1
-#define Rrl 1
+#define Rrl 0
 
 MODULE_INIT(modeling)
 {
@@ -44,6 +44,7 @@ MODULE_EXECUTE(modeling)
   // Kalman prediction
   this->state->x += Bl * this->control->left + Br * this->control->right;
   this->state->p += Q;
+  DEBUG_OUTPUT("M: Predicted state: x = %d, p = %d\n", this->state->x, this->state->p);
   // Kalman update
   // y = [ y1 y2 ]' = [ this->light->left this->light->right ]' - h(this->state->x)
   signed int y1 = (signed int)(this->light->left) - expected_brightness(this->state->x + LINE_SENSOR_DISTANCE);
@@ -65,6 +66,7 @@ MODULE_EXECUTE(modeling)
   // K = [ k1 k2 ] = this->state->p * [ h1 h2 ] * inv(S)
   signed int k1 = this->state->p * (h1 * is11 + h2 * is12);
   signed int k2 = this->state->p * (h1 * is12 + h2 * is22);
+  DEBUG_OUTPUT("M: k = [ %d %d ]\n", k1, k2);
   // x = x + K * y = x + [ k1 k2 ] * [ y1 y2 ]' = x + k1 * y1 + k2 * y2
   this->state->x += k1 * y1 + k2 * y2;
   // P = (I - K * H) * P = (1 - [ k1 k2 ] * [ h1 h2 ]') * P
