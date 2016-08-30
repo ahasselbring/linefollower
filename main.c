@@ -118,6 +118,7 @@ int main()
 #endif
   while (1) {
     get_line_data();
+    DEBUG_OUTPUT("\n-+~+- New cycle -+~+-\n");
     behavior_control_execute(&behavior_control);
     line_perception_execute(&line_perception);
     modeling_execute(&modeling);

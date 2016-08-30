@@ -26,31 +26,32 @@ MODULE_EXECUTE(line_perception)
 {
   if (this->request->type == REQUEST_INIT) {
     if (this->line->left < this->left_black_level) {
-      DEBUG_OUTPUT("Reset timer for left black level (%u).\n", this->line->left);
+      DEBUG_OUTPUT("LP: Reset timer for left black level (%u).\n", this->line->left);
       this->left_black_level = this->line->left;
       this->calibration_timer = 0;
       this->calibration_mask |= 0x01;
     }
     if (this->line->right < this->right_black_level) {
-      DEBUG_OUTPUT("Reset timer for right black level (%u).\n", this->line->right);
+      DEBUG_OUTPUT("LP: Reset timer for right black level (%u).\n", this->line->right);
       this->right_black_level = this->line->right;
       this->calibration_timer = 0;
       this->calibration_mask |= 0x02;
     }
     if (this->line->left > this->left_white_level) {
-      DEBUG_OUTPUT("Reset timer for left white level (%u).\n", this->line->left);
+      DEBUG_OUTPUT("LP: Reset timer for left white level (%u).\n", this->line->left);
       this->left_white_level = this->line->left;
       this->calibration_timer = 0;
       this->calibration_mask |= 0x04;
     }
     if (this->line->right > this->right_white_level) {
-      DEBUG_OUTPUT("Reset timer for right white level (%u).\n", this->line->right);
+      DEBUG_OUTPUT("LP: Reset timer for right white level (%u).\n", this->line->right);
       this->right_white_level = this->line->right;
       this->calibration_timer = 0;
       this->calibration_mask |= 0x08;
     }
     this->calibration_timer++;
     if (this->calibration_mask == 0x0f && this->calibration_timer > CALIBRATION_TIMEOUT) {
+      DEBUG_OUTPUT("LP: Done with calibration.\n");
       this->light->calibrated = 1;
     } else {
       this->light->calibrated = 0;
@@ -71,8 +72,10 @@ MODULE_EXECUTE(line_perception)
     } else {
       this->light->right = 255 * (this->line->right - this->right_black_level) / (this->right_white_level - this->right_black_level);
     }
+    DEBUG_OUTPUT("LP: Measurement: [ %d %d ]\n", this->light->left, this->light->right);
     this->light->calibrated = 1;
     this->light->dark = (this->light->left < DARK_THRESHOLD) || (this->light->right < DARK_THRESHOLD);
+    DEBUG_OUTPUT("LP: Dark? %s.\n", (this->light->dark ? "yes" : "no"));
     this->calibration_timer = 0;
     this->calibration_mask = 0;
   }

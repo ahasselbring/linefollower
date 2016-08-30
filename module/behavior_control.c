@@ -15,18 +15,18 @@ MODULE_EXECUTE(behavior_control)
 {
   switch (this->request->type) {
     case REQUEST_NONE:
-      DEBUG_OUTPUT("In state NONE.\n");
+      DEBUG_OUTPUT("BC: In state NONE.\n");
       this->request->type = REQUEST_INIT;
       break;
     case REQUEST_INIT:
-      DEBUG_OUTPUT("In state INIT.\n");
+      DEBUG_OUTPUT("BC: In state INIT.\n");
       if (this->light->calibrated) {
         this->request->type = REQUEST_DRIVE;
         this->timer = 0;
       }
       break;
     case REQUEST_DRIVE:
-      DEBUG_OUTPUT("In state DRIVE.\n");
+      DEBUG_OUTPUT("BC: In state DRIVE.\n");
       if (this->light->dark) {
         this->timer = 0;
       } else if (this->timer > DRIVE_TIMEOUT) {
@@ -37,7 +37,7 @@ MODULE_EXECUTE(behavior_control)
       }
       break;
     case REQUEST_CHECK_FINISHED:
-      DEBUG_OUTPUT("In state CHECK_FINISHED.\n");
+      DEBUG_OUTPUT("BC: In state CHECK_FINISHED.\n");
       if (this->light->dark) {
         this->request->type = REQUEST_DRIVE;
         this->timer = 0;
@@ -47,7 +47,7 @@ MODULE_EXECUTE(behavior_control)
         this->timer++;
       }
     case REQUEST_FINISHED:
-      DEBUG_OUTPUT("In state DRIVE.\n");
+      DEBUG_OUTPUT("BC: In state DRIVE.\n");
       break;
   }
 }
