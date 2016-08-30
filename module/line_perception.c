@@ -1,8 +1,12 @@
 #include "line_perception.h"
 
+// FIXME: needs to be adapted for the real robot
 #define DARK_THRESHOLD 100
+// FIXME: needs to be adapted for the real robot
 #define MIN_WHITE_LINE 950
+// FIXME: needs to be adapted for the real robot
 #define MAX_BLACK_LINE 850
+// FIXME: depends on cycle time
 #define CALIBRATION_TIMEOUT 20
 
 MODULE_INIT(line_perception)

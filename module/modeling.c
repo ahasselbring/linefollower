@@ -1,12 +1,19 @@
 #include "modeling.h"
 
+// FIXME: needs to be adapted to the real robot
 #define LINE_SENSOR_DISTANCE 100
+// FIXME: needs to be adapted to the real robot
 #define BLACK_CENTER_DISTANCE 200
 #define P0 (100 * 100)
+// FIXME: depends on cycle time
 #define B 0.1
+// FIXME: depends on cycle time
 #define Q 10 * 10
+// FIXME: needs to be adapted to the real robot
 #define Rll 5
+// FIXME: needs to be adapted to the real robot
 #define Rrr 5
+// FIXME: needs to be adapted to the real robot
 #define Rrl 0
 
 MODULE_INIT(modeling)

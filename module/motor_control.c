@@ -1,6 +1,8 @@
 #include "motor_control.h"
 
+// FIXME: needs to be adapted for the real robot
 #define Kl -0.5
+// FIXME: needs to be adapted for the real robot
 #define Kr 0.5
 
 MODULE_INIT(motor_control)

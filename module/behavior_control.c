@@ -1,6 +1,8 @@
 #include "behavior_control.h"
 
+// FIXME: depends on cycle time
 #define DRIVE_TIMEOUT 100
+// FIXME: depends on cycle time
 #define CHECK_FINISHED_TIMEOUT 100
 
 MODULE_INIT(behavior_control)
