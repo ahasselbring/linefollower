@@ -11,9 +11,28 @@
 #define ROBOT_MOTOR_SPEED_FACTOR 0.05 // speed of a wheel at full speed [m/s]
 
 // parameters of the environment
-#define ENVIRONMENT_LINE_WIDTH 0.01 // width of the outer black lines [m]
+#define ENVIRONMENT_LINE_WIDTH 0.02 // width of the outer black lines [m]
 
-static const float pi_2 = 3.14159 / 2;
+static const float pi = 3.14159;
+
+static float distance_to_line_segment(const float v1, const float v2, const float w1, const float w2,
+  const float p1, const float p2)
+{
+  const float wv1 = w1 - v1, wv2 = w2 - v2;
+  const float pv1 = p1 - v1, pv2 = p2 - v2;
+  const float l2 = wv1 * wv1 + wv2 * wv2;
+  if (l2 == 0) {
+    return sqrtf(pv1 * pv1 + pv2 * pv2);
+  }
+  float t = (pv1 * wv1 + pv2 * wv2) / l2;
+  if (t < 0) {
+    t = 0;
+  } else if (t > 1) {
+    t = 1;
+  }
+  const float x1 = v1 + t * wv1, x2 = v2 + t * wv2;
+  return sqrtf((p1 - x1) * (p1- x1) + (p2 - x2) * (p2 - x2));
+}
 
 static float get_global_line_sensor(const environment_t* environment, const float x, const float y)
 {
@@ -21,11 +40,9 @@ static float get_global_line_sensor(const environment_t* environment, const floa
   unsigned int i;
   for (i = 0; i < environment->number_of_lines; i++) {
     const struct environment_line* l = &(environment->lines[i]);
-    const float y2y1 = l->y2 - l->y1;
-    const float x2x1 = l->x2 - l->x1;
-    float distance_to_line = fabsf(y2y1 * x - x2x1 * y + l->x2 * l->y1 - l->y2 * l->x1) / sqrtf(y2y1 * y2y1 + x2x1 * x2x1);
-    if (distance_to_line < ENVIRONMENT_LINE_WIDTH) {
-      brightness -= 0.5 * cosf(pi_2 * distance_to_line / ENVIRONMENT_LINE_WIDTH) + 0.5;
+    float d = distance_to_line_segment(l->x1, l->y1, l->x2, l->y2, x, y);
+    if (d < ENVIRONMENT_LINE_WIDTH) {
+      brightness -= 0.5 * cosf(pi * d / ENVIRONMENT_LINE_WIDTH) + 0.5;
     }
   }
   if (brightness < 0) {
@@ -89,17 +106,17 @@ void simulator_init(simulator_t* this)
     puts("Could not allocate memory for lines.");
     return;
   }
-  this->environment.lines[0].x1 = 0;
+  this->environment.lines[0].x1 = ROBOT_LINE_SENSOR_X + 0.03;
   this->environment.lines[0].y1 = ENVIRONMENT_LINE_WIDTH;
   this->environment.lines[0].x2 = 1;
   this->environment.lines[0].y2 = ENVIRONMENT_LINE_WIDTH;
-  this->environment.lines[1].x1 = 0;
+  this->environment.lines[1].x1 = ROBOT_LINE_SENSOR_X + 0.03;
   this->environment.lines[1].y1 = -ENVIRONMENT_LINE_WIDTH;
   this->environment.lines[1].x2 = 1;
   this->environment.lines[1].y2 = -ENVIRONMENT_LINE_WIDTH;
-  this->environment.lines[2].x1 = 0;
+  this->environment.lines[2].x1 = ROBOT_LINE_SENSOR_X + 0.03;
   this->environment.lines[2].y1 = ENVIRONMENT_LINE_WIDTH;
-  this->environment.lines[2].x2 = 0;
+  this->environment.lines[2].x2 = ROBOT_LINE_SENSOR_X + 0.03;
   this->environment.lines[2].y2 = -ENVIRONMENT_LINE_WIDTH;
   this->environment.number_of_lines = 3;
 }
