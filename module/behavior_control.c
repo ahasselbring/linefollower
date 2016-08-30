@@ -46,8 +46,9 @@ MODULE_EXECUTE(behavior_control)
       } else {
         this->timer++;
       }
+      break;
     case REQUEST_FINISHED:
-      DEBUG_OUTPUT("BC: In state DRIVE.\n");
+      DEBUG_OUTPUT("BC: In state FINISHED.\n");
       break;
   }
 }
