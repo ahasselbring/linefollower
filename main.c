@@ -2,7 +2,7 @@
 #include "asuro.h"
 #elif TARGET_SIMULATOR
 #include <unistd.h>
-#include "simulator.h"
+#include "sim/simulator.h"
 
 #define SIMULATION_DT 0.01
 #define SIMULATION_USLEEP 50000
