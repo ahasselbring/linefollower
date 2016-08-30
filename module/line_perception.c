@@ -1,7 +1,8 @@
 #include "line_perception.h"
 
 #define DARK_THRESHOLD 200
-#define MIN_WHITE_LINE 900
+#define MIN_WHITE_LINE 950
+#define MAX_BLACK_LINE 850
 #define CALIBRATION_TIMEOUT 20
 
 MODULE_INIT(line_perception)
@@ -13,42 +14,43 @@ MODULE_INIT(line_perception)
   this->light->right = 255;
   this->light->calibrated = 0;
   this->light->dark = 1;
-  this->left_black_level = 1024;
-  this->left_white_level = 0;
-  this->right_black_level = 1024;
-  this->right_white_level = 0;
+  this->left_black_level = MAX_BLACK_LINE;
+  this->left_white_level = MIN_WHITE_LINE;
+  this->right_black_level = MAX_BLACK_LINE;
+  this->right_white_level = MIN_WHITE_LINE;
   this->calibration_timer = 0;
+  this->calibration_mask = 0;
 }
 
 MODULE_EXECUTE(line_perception)
 {
   if (this->request->type == REQUEST_INIT) {
-    this->calibration_timer++;
     if (this->line->left < this->left_black_level) {
       DEBUG_OUTPUT("Reset timer for left black level (%u).\n", this->line->left);
       this->left_black_level = this->line->left;
       this->calibration_timer = 0;
+      this->calibration_mask |= 0x01;
     }
     if (this->line->right < this->right_black_level) {
       DEBUG_OUTPUT("Reset timer for right black level (%u).\n", this->line->right);
       this->right_black_level = this->line->right;
       this->calibration_timer = 0;
+      this->calibration_mask |= 0x02;
     }
-    if (this->line->left >= MIN_WHITE_LINE && this->line->left > this->left_white_level) {
+    if (this->line->left > this->left_white_level) {
       DEBUG_OUTPUT("Reset timer for left white level (%u).\n", this->line->left);
       this->left_white_level = this->line->left;
       this->calibration_timer = 0;
+      this->calibration_mask |= 0x04;
     }
-    if (this->line->right >= MIN_WHITE_LINE && this->line->right > this->right_white_level) {
+    if (this->line->right > this->right_white_level) {
       DEBUG_OUTPUT("Reset timer for right white level (%u).\n", this->line->right);
       this->right_white_level = this->line->right;
       this->calibration_timer = 0;
+      this->calibration_mask |= 0x08;
     }
-    if (this->line->left < MIN_WHITE_LINE && this->line->right < MIN_WHITE_LINE) {
-      DEBUG_OUTPUT("Reset timer because brightness went below threshold.\n");
-      this->calibration_timer = 0;
-    }
-    if (this->calibration_timer > CALIBRATION_TIMEOUT) {
+    this->calibration_timer++;
+    if (this->calibration_mask == 0x0f && this->calibration_timer > CALIBRATION_TIMEOUT) {
       this->light->calibrated = 1;
     } else {
       this->light->calibrated = 0;
