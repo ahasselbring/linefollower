@@ -74,5 +74,6 @@ MODULE_EXECUTE(line_perception)
     this->light->calibrated = 1;
     this->light->dark = (this->light->left < DARK_THRESHOLD) || (this->light->right < DARK_THRESHOLD);
     this->calibration_timer = 0;
+    this->calibration_mask = 0;
   }
 }
