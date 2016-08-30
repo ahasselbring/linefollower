@@ -1,7 +1,7 @@
 #include "behavior_control.h"
 
-#define DRIVE_TIMEOUT 1000
-#define CHECK_FINISHED_TIMEOUT 1000
+#define DRIVE_TIMEOUT 100
+#define CHECK_FINISHED_TIMEOUT 100
 
 MODULE_INIT(behavior_control)
 {
