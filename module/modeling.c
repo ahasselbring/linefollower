@@ -46,11 +46,13 @@ MODULE_EXECUTE(modeling)
   this->state->p += Q;
   // Kalman update
   // y = [ y1 y2 ]' = [ this->light->left this->light->right ]' - h(this->state->x)
-  signed int y1 = this->light->left - expected_brightness(this->state->x + LINE_SENSOR_DISTANCE);
-  signed int y2 = this->light->right - expected_brightness(this->state->x - LINE_SENSOR_DISTANCE);
+  signed int y1 = (signed int)(this->light->left) - expected_brightness(this->state->x + LINE_SENSOR_DISTANCE);
+  signed int y2 = (signed int)(this->light->right) - expected_brightness(this->state->x - LINE_SENSOR_DISTANCE);
+  DEBUG_OUTPUT("M: y = [ %d %d ]\n", y1, y2);
   // H = [ h1 h2 ]' = d/dx h(this->state->x)
   signed int h1 = ddx_expected_brightness(this->state->x + LINE_SENSOR_DISTANCE);
   signed int h2 = ddx_expected_brightness(this->state->x - LINE_SENSOR_DISTANCE);
+  DEBUG_OUTPUT("M: h = [ %d %d ]\n", h1, h2);
   // S = [ s11 s12; s21 s22 ] = [ h1 h2 ]' * this->state->p * [ h1 h2 ] + [ r11 r12; r12 r22 ] = [ p * h1^2 + r11, p * h1 * h2 + r12; p * h1 * h2 + r12, p * h2^2 + r22 ]
   signed detS = this->state->p * (Rll * h2 * h2 + Rrr * h1 * h1 - 2 * h1 * h2 * Rrl) + Rll * Rrr - Rrl * Rrl;
   if (detS == 0) {
@@ -67,4 +69,5 @@ MODULE_EXECUTE(modeling)
   this->state->x += k1 * y1 + k2 * y2;
   // P = (I - K * H) * P = (1 - [ k1 k2 ] * [ h1 h2 ]') * P
   this->state->p -= (k1 * h1 + k2 * h2) * this->state->p;
+  DEBUG_OUTPUT("M: Estimated state: x = %d, p = %d\n", this->state->x, this->state->p);
 }
