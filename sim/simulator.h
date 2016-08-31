@@ -18,14 +18,13 @@ typedef struct robot {
 } robot_t;
 
 typedef struct environment {
+  /// an array of lines
   struct environment_line {
     /// coordinates of the first point
     float x1, y1;
     /// coordinates of the second point
     float x2, y2;
-  };
-  /// an array of lines
-  struct environment_line* lines;
+  } * lines;
   /// the number of lines in the array
   unsigned int number_of_lines;
 } environment_t;
