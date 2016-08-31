@@ -95,28 +95,48 @@ void simulator_print(const simulator_t* this)
   printf("X: %f\nY: %f\nA: %f\n", this->robot.x, this->robot.y, this->robot.theta);
 }
 
-void simulator_init(simulator_t* this)
+int simulator_init(simulator_t* this, const char* world)
 {
-  this->robot.x = 0;
-  this->robot.y = 0;
-  this->robot.theta = 0;
-  this->environment.lines = calloc(3, sizeof(struct environment_line));
-  if (this->environment.lines == NULL) {
-    this->environment.number_of_lines = 0;
-    puts("Could not allocate memory for lines.");
-    return;
+  FILE* f = fopen(world, "r");
+  if (f == NULL) {
+    puts("Could not open world file.");
+    return -1;
   }
-  this->environment.lines[0].x1 = ROBOT_LINE_SENSOR_X + 0.03;
-  this->environment.lines[0].y1 = ENVIRONMENT_LINE_WIDTH;
-  this->environment.lines[0].x2 = 1;
-  this->environment.lines[0].y2 = ENVIRONMENT_LINE_WIDTH;
-  this->environment.lines[1].x1 = ROBOT_LINE_SENSOR_X + 0.03;
-  this->environment.lines[1].y1 = -ENVIRONMENT_LINE_WIDTH;
-  this->environment.lines[1].x2 = 1;
-  this->environment.lines[1].y2 = -ENVIRONMENT_LINE_WIDTH;
-  this->environment.lines[2].x1 = ROBOT_LINE_SENSOR_X + 0.03;
-  this->environment.lines[2].y1 = ENVIRONMENT_LINE_WIDTH;
-  this->environment.lines[2].x2 = ROBOT_LINE_SENSOR_X + 0.03;
-  this->environment.lines[2].y2 = -ENVIRONMENT_LINE_WIDTH;
-  this->environment.number_of_lines = 3;
+  if (fscanf(f, "%f %f %f\n", &(this->robot.x), &(this->robot.y), &(this->robot.theta)) != 3) {
+    puts("Could not read initial robot pose.");
+    fclose(f);
+    return -1;
+  }
+  if (fscanf(f, "%u\n", &(this->environment.number_of_lines)) != 1) {
+    puts("Could not read number of lines.");
+    fclose(f);
+    return -1;
+  }
+  this->environment.lines = calloc(this->environment.number_of_lines, sizeof(struct environment_line));
+  if (this->environment.lines == NULL) {
+    puts("Could not allocate memory for lines.");
+    this->environment.number_of_lines = 0;
+    fclose(f);
+    return -1;
+  }
+  unsigned int i;
+  for (i = 0; i < this->environment.number_of_lines; i++) {
+    struct environment_line* l = &(this->environment.lines[i]);
+    if (fscanf(f, "%f %f %f %f\n", &(l->x1), &(l->y1), &(l->x2), &(l->y2)) != 4) {
+      puts("Could not read line.");
+      free(this->environment.lines);
+      this->environment.number_of_lines = 0;
+      fclose(f);
+      return -1;
+    }
+  }
+  fclose(f);
+  return 0;
+}
+
+void simulator_destroy(simulator_t* this)
+{
+  if (this->environment.number_of_lines != 0) {
+    free(this->environment.lines);
+  }
 }

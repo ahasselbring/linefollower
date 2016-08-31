@@ -72,5 +72,13 @@ void simulator_print(const simulator_t* this);
 /**
  * @brief simulator_init initializes the simulation
  * @param this the simulator object
+ * @param world path to the world file
+ * @return < 0 iff an error occured
  */
-void simulator_init(simulator_t* this);
+int simulator_init(simulator_t* this, const char* world);
+
+/**
+ * @brief simulator_destroy frees memory of the simulation
+ * @param this the simulator object
+ */
+void simulator_destroy(simulator_t* this);

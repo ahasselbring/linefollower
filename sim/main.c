@@ -1,4 +1,6 @@
 #include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 #include "simulator.h"
 #include "controller.h"
@@ -33,10 +35,16 @@ static void set_motor_data(const control_t* control)
   simulator_set_motor_data(&simulator, control->left, control->right, convert_motor_mode(control->left_mode), convert_motor_mode(control->right_mode));
 }
 
-int main()
+int main(int argc, char* argv[])
 {
   controller_t controller;
-  simulator_init(&simulator);
+  if (argc != 2) {
+    puts("Usage: line <world>");
+    return EXIT_FAILURE;
+  }
+  if (simulator_init(&simulator, argv[1]) < 0) {
+    return EXIT_FAILURE;
+  }
   controller_init(&controller, &get_line_data, &set_motor_data);
   while (1) {
     DEBUG_OUTPUT("\n-+~+- New cycle -+~+-\n");
