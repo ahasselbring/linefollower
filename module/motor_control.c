@@ -21,8 +21,20 @@ static void controller(signed int reference, signed int state, unsigned char* le
   signed int error = reference - state;
   DEBUG_OUTPUT("MC: e = %d\n", error);
   // P controller
-  *left = 180 + Kl * error;
-  *right = 180 + Kr * error;
+  if (Kl * error > 75) {
+    *left = 255;
+  } else if (Kl * error < -180) {
+    *left = 0;
+  } else {
+    *left = 180 + Kl * error;
+  }
+  if (Kr * error > 75) {
+    *right = 255;
+  } else if (Kr * error < -180) {
+    *right = 0;
+  } else {
+    *right = 180 + Kr * error;
+  }
   DEBUG_OUTPUT("MC: u = [ %d %d ]\n", *left, *right);
 }
 
