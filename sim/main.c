@@ -45,7 +45,10 @@ int main(int argc, char* argv[])
   if (simulator_init(&simulator, argv[1]) < 0) {
     return EXIT_FAILURE;
   }
-  controller_init(&controller, &get_line_data, &set_motor_data);
+  if (controller_init(&controller, &get_line_data, &set_motor_data) < 0) {
+    simulator_destroy(&simulator);
+    return EXIT_FAILURE;
+  }
   while (1) {
     DEBUG_OUTPUT("\n-+~+- New cycle -+~+-\n");
     controller_execute(&controller);

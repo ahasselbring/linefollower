@@ -34,12 +34,12 @@ void controller_execute(controller_t* this)
   this->set_motor_data(global_get_control());
 }
 
-void controller_init(controller_t* this, void (*get_line_data)(), void (*set_motor_data)())
+int controller_init(controller_t* this, void (*get_line_data)(), void (*set_motor_data)())
 {
   // initialize hardware interface
   if (get_line_data == NULL || set_motor_data == NULL) {
     DEBUG_OUTPUT("C: get_line_data or set_motor_data is NULL.\n");
-    return;
+    return -1;
   }
   this->get_line_data = get_line_data;
   this->set_motor_data = set_motor_data;
@@ -48,4 +48,5 @@ void controller_init(controller_t* this, void (*get_line_data)(), void (*set_mot
   line_perception_init(&(this->line_perception));
   modeling_init(&(this->modeling));
   motor_control_init(&(this->motor_control));
+  return 0;
 }

@@ -35,7 +35,9 @@ int main()
   controller_t controller;
   Init();
   FrontLED(ON);
-  controller_init(&controller, &get_line_data, &set_motor_data);
+  if (controller_init(&controller, &get_line_data, &set_motor_data) < 0) {
+    while (1);
+  }
   while (1) {
     controller_execute(&controller);
     // TODO: do something about timing

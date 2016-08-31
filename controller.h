@@ -34,5 +34,6 @@ void controller_execute(controller_t* this);
  * @param this the controller object
  * @param get_line_data a function that gets data from the line sensors
  * @param set_motor_data a function that sets the motor output
+ * @return < 0 iff an error occured
  */
-void controller_init(controller_t* this, void (*get_line_data)(line_t*), void (*set_motor_data)(const control_t*));
+int controller_init(controller_t* this, void (*get_line_data)(line_t*), void (*set_motor_data)(const control_t*));
