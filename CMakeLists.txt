@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.1)
 project(line)
 
 set(SOURCES
@@ -24,12 +24,13 @@ set(HEADERS
 )
 
 set(SIM_SOURCES
-  sim/simulator.c
-  sim/main.c
+  sim/main.cpp
+  sim/Simulator.cpp
 )
 
 set(SIM_HEADERS
-  sim/simulator.h
+  sim/Simulator.hpp
+  sim/Types.hpp
 )
 
 set(ROBOT_SOURCES
@@ -42,6 +43,9 @@ set(ROBOT_HEADERS
 )
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -pedantic -std=c11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic -std=c++11")
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
 if(SIM)
   add_definitions(-DTARGET_SIMULATOR)
   add_executable(line ${SOURCES} ${HEADERS} ${SIM_SOURCES} ${SIM_HEADERS})
@@ -52,5 +56,3 @@ elseif(ROBOT)
 else()
   message(FATAL_ERROR "You need to define a target.")
 endif()
-
-target_include_directories(line PUBLIC ${CMAKE_SOURCE_DIR})
