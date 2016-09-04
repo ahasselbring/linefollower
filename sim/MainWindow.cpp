@@ -12,9 +12,9 @@ MainWindow::MainWindow() :
 {
   setCentralWidget(graphics_view_);
 
-  createActions();
-  createStatusBar();
-  createDockWindows();
+  create_actions();
+  create_status_bar();
+  create_dock_windows();
 
   setWindowTitle(tr("Simulator"));
   setUnifiedTitleAndToolBarOnMac(true);
@@ -27,7 +27,7 @@ void MainWindow::add_to_debug(const QString& str)
   debug_view_->moveCursor(QTextCursor::End);
 }
 
-void MainWindow::createActions()
+void MainWindow::create_actions()
 {
   // Add file menu and file toolbar.
   QMenu* file_menu = menuBar()->addMenu(tr("&File"));
@@ -74,12 +74,12 @@ void MainWindow::createActions()
   view_menu_ = menuBar()->addMenu(tr("&View"));
 }
 
-void MainWindow::createStatusBar()
+void MainWindow::create_status_bar()
 {
   statusBar()->showMessage(tr("Simulation stopped"));
 }
 
-void MainWindow::createDockWindows()
+void MainWindow::create_dock_windows()
 {
   QDockWidget* dock = new QDockWidget(tr("Debug Output"), this);
   dock->setAllowedAreas(Qt::BottomDockWidgetArea);

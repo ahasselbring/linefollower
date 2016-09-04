@@ -41,17 +41,17 @@ private slots:
   void reset();
 private:
   /**
-   * @brief createActions creates the menus and toolbars
+   * @brief create_actions creates the menus and toolbars
    */
-  void createActions();
+  void create_actions();
   /**
-   * @brief createStatusBar creates the status bar
+   * @brief create_status_bar creates the status bar
    */
-  void createStatusBar();
+  void create_status_bar();
   /**
-   * @brief createDockWindows creates the debug and property view
+   * @brief create_dock_windows creates the debug and property view
    */
-  void createDockWindows();
+  void create_dock_windows();
   /// a view with a 2D graphical representation of the scene
   QPlainTextEdit* graphics_view_;
   /// a view where debug messages from the modules are printed
