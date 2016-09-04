@@ -25,10 +25,12 @@ set(HEADERS
 
 set(SIM_SOURCES
   sim/main.cpp
+  sim/MainWindow.cpp
   sim/Simulator.cpp
 )
 
 set(SIM_HEADERS
+  sim/MainWindow.hpp
   sim/Simulator.hpp
   sim/Types.hpp
 )
@@ -48,8 +50,12 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 if(SIM)
   add_definitions(-DTARGET_SIMULATOR)
+  set(CMAKE_AUTOMOC ON)
+  find_package(Qt5Widgets REQUIRED)
+
   add_executable(line ${SOURCES} ${HEADERS} ${SIM_SOURCES} ${SIM_HEADERS})
   target_link_libraries(line m)
+  target_link_libraries(line Qt5::Widgets)
 elseif(ROBOT)
   add_definitions(-DTARGET_ROBOT)
   add_executable(line ${SOURCES} ${HEADERS} ${ROBOT_SOURCES} ${ROBOT_HEADERS})
