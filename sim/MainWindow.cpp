@@ -84,6 +84,8 @@ void MainWindow::create_dock_windows()
   QDockWidget* dock = new QDockWidget(tr("Debug Output"), this);
   dock->setAllowedAreas(Qt::BottomDockWidgetArea);
   debug_view_ = new QPlainTextEdit(dock);
+  debug_view_->setReadOnly(true);
+  debug_view_->setMaximumBlockCount(1000);
   dock->setWidget(debug_view_);
   addDockWidget(Qt::BottomDockWidgetArea, dock);
   view_menu_->addAction(dock->toggleViewAction());
