@@ -109,6 +109,8 @@ private:
   MotorMode left_mode_request_;
   /// the desired mode of the right motor
   MotorMode right_mode_request_;
+  /// mutex to ensure there are no races
+  mutable std::mutex mutex_;
 };
 
 class Simulator {

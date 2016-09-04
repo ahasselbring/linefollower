@@ -69,6 +69,7 @@ Robot::~Robot()
 
 void Robot::reset()
 {
+  std::lock_guard<std::mutex> lg(mutex_);
   controller_init(&controller_, &Robot::get_line_data_wrap, &Robot::set_motor_data_wrap);
   pose_ = environment_.get_initial_pose();
   left_speed_request_ = right_speed_request_ = 0;
@@ -77,6 +78,7 @@ void Robot::reset()
 
 void Robot::cycle(const float dt)
 {
+  std::lock_guard<std::mutex> lg(mutex_);
   // Execute a cycle of the RCP
   controller_execute(&controller_);
   // Simulate the dynamics of the robot for a specific time interval.
