@@ -38,7 +38,7 @@ void controller_execute(controller_t* self)
 int controller_init(controller_t* self, void (*get_line_data)(), void (*set_motor_data)())
 {
   // initialize hardware interface
-  if (get_line_data == NULL || set_motor_data == NULL) {
+  if (get_line_data == (void*)0 || set_motor_data == (void*)0) {
     DEBUG_OUTPUT("C: get_line_data or set_motor_data is NULL.\n");
     return -1;
   }

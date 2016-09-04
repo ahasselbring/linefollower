@@ -13,6 +13,11 @@ public:
    * @brief MainWindow creates the window and everything else
    */
   MainWindow();
+  /**
+   * @brief add_to_debug adds a string at the end of the debug view
+   * @param str the string that shall be added
+   */
+  void add_to_debug(const QString& str);
 private slots:
   /**
    * @brief open loads a new environment with a file dialog

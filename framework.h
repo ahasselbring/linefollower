@@ -22,9 +22,9 @@ void name##_execute(name##_t* self);
 
 #define MODULE_EXECUTE(name) void name##_execute(name##_t* self)
 
-#if defined TARGET_SIMULATOR && !(defined NDEBUG)
-#include <stdio.h>
-#define DEBUG_OUTPUT(...) printf(__VA_ARGS__)
+#if defined TARGET_SIMULATOR
+void debug_output(const char* fmt, ...);
+#define DEBUG_OUTPUT(...) debug_output(__VA_ARGS__)
 #else
 #define DEBUG_OUTPUT(...)
 #endif

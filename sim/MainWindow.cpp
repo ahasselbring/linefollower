@@ -20,6 +20,13 @@ MainWindow::MainWindow() :
   setUnifiedTitleAndToolBarOnMac(true);
 }
 
+void MainWindow::add_to_debug(const QString& str)
+{
+  debug_view_->moveCursor(QTextCursor::End);
+  debug_view_->insertPlainText(str);
+  debug_view_->moveCursor(QTextCursor::End);
+}
+
 void MainWindow::createActions()
 {
   // Add file menu and file toolbar.
