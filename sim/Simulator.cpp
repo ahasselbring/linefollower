@@ -14,6 +14,7 @@ void Environment::load(const std::string& path)
   if (!f.is_open()) {
     throw std::runtime_error("Could not open environment file!");
   }
+  std::lock_guard<std::mutex> lg(mutex_);
   // TODO: error handling
   f >> initial_pose_.position.x >> initial_pose_.position.y >> initial_pose_.heading;
   unsigned int number_of_lines = 0;
@@ -30,7 +31,7 @@ void Environment::load(const std::string& path)
 float Environment::get_brightness(const Point2D& position) const
 {
   float brightness = 1;
-  // FIXME: Potential race condition with load.
+  std::lock_guard<std::mutex> lg(mutex_);
   for (auto& line : lines_) {
     const float d = line.distance_to_point(position);
     if (d < line_width_) {
@@ -45,6 +46,7 @@ float Environment::get_brightness(const Point2D& position) const
 
 const Pose2D& Environment::get_initial_pose() const
 {
+  std::lock_guard<std::mutex> lg(mutex_);
   return initial_pose_;
 }
 

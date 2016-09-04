@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <mutex>
 
 #include "Types.hpp"
 
@@ -34,6 +35,8 @@ private:
   Pose2D initial_pose_;
   /// a list of black lines on a white surface
   std::vector<Line2D> lines_;
+  /// mutex to ensure there are no races
+  mutable std::mutex mutex_;
 };
 
 class Robot {
