@@ -23,6 +23,7 @@ DECLARE_MODULE_GET(control)
 
 void controller_execute(controller_t* self)
 {
+  DEBUG_OUTPUT("\n-+~+- Start of controller execution -+~+-\n");
   // get sensor data
   self->get_line_data(global_get_line());
   // execute all modules in the correct order
