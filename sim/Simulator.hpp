@@ -22,6 +22,11 @@ public:
    * @return the brightness in [0,1]
    */
   float get_brightness(const Point2D& position) const;
+  /**
+   * @brief get_initial_pose returns the initial pose of the robot
+   * @return the initial pose of the robot
+   */
+  const Pose2D& get_initial_pose() const;
 private:
   /// the width of a black line [m]
   static constexpr float line_width_ = 0.02;
@@ -42,6 +47,10 @@ public:
    * @brief ~Robot deinitializes the object
    */
   ~Robot();
+  /**
+   * @brief reset sets the robot back to its initial state
+   */
+  void reset();
   /**
    * @brief cycle executes a simulation cycle of the robot including the RCP
    * @param dt the amount of time per controller cycle
@@ -105,6 +114,10 @@ public:
    * @brief Simulator initializes members
    */
   Simulator();
+  /**
+   * @brief reset resets the state of the simulator
+   */
+  void reset();
   /**
    * @brief cycle executes a simulation cycle
    */

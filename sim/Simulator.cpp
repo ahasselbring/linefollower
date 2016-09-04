@@ -43,6 +43,11 @@ float Environment::get_brightness(const Point2D& position) const
   return brightness;
 }
 
+const Pose2D& Environment::get_initial_pose() const
+{
+  return initial_pose_;
+}
+
 
 Robot::Robot(const Environment& environment) :
   environment_(environment)
@@ -52,12 +57,20 @@ Robot::Robot(const Environment& environment) :
     throw std::runtime_error("Robot::instance_ is not NULL but a Robot is constructed!");
   }
   instance_ = this;
-  controller_init(&controller_, &Robot::get_line_data_wrap, &Robot::set_motor_data_wrap);
+  reset();
 }
 
 Robot::~Robot()
 {
   instance_ = nullptr;
+}
+
+void Robot::reset()
+{
+  controller_init(&controller_, &Robot::get_line_data_wrap, &Robot::set_motor_data_wrap);
+  pose_ = environment_.get_initial_pose();
+  left_speed_request_ = right_speed_request_ = 0;
+  left_mode_request_ = right_mode_request_ = MOTOR_OFF;
 }
 
 void Robot::cycle(const float dt)
@@ -127,6 +140,11 @@ Simulator::Simulator() :
 {
 }
 
+void Simulator::reset()
+{
+  robot_.reset();
+}
+
 void Simulator::cycle()
 {
   robot_.cycle(dt_);
@@ -135,4 +153,5 @@ void Simulator::cycle()
 void Simulator::load_environment(const std::string& path)
 {
   environment_.load(path);
+  robot_.reset();
 }
