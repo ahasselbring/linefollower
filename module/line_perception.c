@@ -14,73 +14,73 @@ MODULE_INIT(line_perception)
   MODULE_GET(line);
   MODULE_GET(request);
   MODULE_GET(light);
-  this->light->left = 255;
-  this->light->right = 255;
-  this->light->calibrated = 0;
-  this->light->dark = 1;
-  this->left_black_level = MAX_BLACK_LINE;
-  this->left_white_level = MIN_WHITE_LINE;
-  this->right_black_level = MAX_BLACK_LINE;
-  this->right_white_level = MIN_WHITE_LINE;
-  this->calibration_timer = 0;
-  this->calibration_mask = 0;
+  self->light->left = 255;
+  self->light->right = 255;
+  self->light->calibrated = 0;
+  self->light->dark = 1;
+  self->left_black_level = MAX_BLACK_LINE;
+  self->left_white_level = MIN_WHITE_LINE;
+  self->right_black_level = MAX_BLACK_LINE;
+  self->right_white_level = MIN_WHITE_LINE;
+  self->calibration_timer = 0;
+  self->calibration_mask = 0;
 }
 
 MODULE_EXECUTE(line_perception)
 {
-  if (this->request->type == REQUEST_INIT) {
-    if (this->line->left < this->left_black_level) {
-      DEBUG_OUTPUT("LP: Reset timer for left black level (%u).\n", this->line->left);
-      this->left_black_level = this->line->left;
-      this->calibration_timer = 0;
-      this->calibration_mask |= 0x01;
+  if (self->request->type == REQUEST_INIT) {
+    if (self->line->left < self->left_black_level) {
+      DEBUG_OUTPUT("LP: Reset timer for left black level (%u).\n", self->line->left);
+      self->left_black_level = self->line->left;
+      self->calibration_timer = 0;
+      self->calibration_mask |= 0x01;
     }
-    if (this->line->right < this->right_black_level) {
-      DEBUG_OUTPUT("LP: Reset timer for right black level (%u).\n", this->line->right);
-      this->right_black_level = this->line->right;
-      this->calibration_timer = 0;
-      this->calibration_mask |= 0x02;
+    if (self->line->right < self->right_black_level) {
+      DEBUG_OUTPUT("LP: Reset timer for right black level (%u).\n", self->line->right);
+      self->right_black_level = self->line->right;
+      self->calibration_timer = 0;
+      self->calibration_mask |= 0x02;
     }
-    if (this->line->left > this->left_white_level) {
-      DEBUG_OUTPUT("LP: Reset timer for left white level (%u).\n", this->line->left);
-      this->left_white_level = this->line->left;
-      this->calibration_timer = 0;
-      this->calibration_mask |= 0x04;
+    if (self->line->left > self->left_white_level) {
+      DEBUG_OUTPUT("LP: Reset timer for left white level (%u).\n", self->line->left);
+      self->left_white_level = self->line->left;
+      self->calibration_timer = 0;
+      self->calibration_mask |= 0x04;
     }
-    if (this->line->right > this->right_white_level) {
-      DEBUG_OUTPUT("LP: Reset timer for right white level (%u).\n", this->line->right);
-      this->right_white_level = this->line->right;
-      this->calibration_timer = 0;
-      this->calibration_mask |= 0x08;
+    if (self->line->right > self->right_white_level) {
+      DEBUG_OUTPUT("LP: Reset timer for right white level (%u).\n", self->line->right);
+      self->right_white_level = self->line->right;
+      self->calibration_timer = 0;
+      self->calibration_mask |= 0x08;
     }
-    this->calibration_timer++;
-    if (this->calibration_mask == 0x0f && this->calibration_timer > CALIBRATION_TIMEOUT) {
+    self->calibration_timer++;
+    if (self->calibration_mask == 0x0f && self->calibration_timer > CALIBRATION_TIMEOUT) {
       DEBUG_OUTPUT("LP: Done with calibration.\n");
-      this->light->calibrated = 1;
+      self->light->calibrated = 1;
     } else {
-      this->light->calibrated = 0;
+      self->light->calibrated = 0;
     }
-    this->light->dark = 1;
+    self->light->dark = 1;
   } else {
-    if (this->line->left <= this->left_black_level) {
-      this->light->left = 0;
-    } else if (this->line->left >= this->left_white_level) {
-      this->light->left = 255;
+    if (self->line->left <= self->left_black_level) {
+      self->light->left = 0;
+    } else if (self->line->left >= self->left_white_level) {
+      self->light->left = 255;
     } else {
-      this->light->left = 255 * (this->line->left - this->left_black_level) / (this->left_white_level - this->left_black_level);
+      self->light->left = 255 * (self->line->left - self->left_black_level) / (self->left_white_level - self->left_black_level);
     }
-    if (this->line->right <= this->right_black_level) {
-      this->light->right = 0;
-    } else if (this->line->right >= this->right_white_level) {
-      this->light->right = 255;
+    if (self->line->right <= self->right_black_level) {
+      self->light->right = 0;
+    } else if (self->line->right >= self->right_white_level) {
+      self->light->right = 255;
     } else {
-      this->light->right = 255 * (this->line->right - this->right_black_level) / (this->right_white_level - this->right_black_level);
+      self->light->right = 255 * (self->line->right - self->right_black_level) / (self->right_white_level - self->right_black_level);
     }
-    DEBUG_OUTPUT("LP: Measurement: [ %d %d ]\n", this->light->left, this->light->right);
-    this->light->calibrated = 1;
-    this->light->dark = (this->light->left < DARK_THRESHOLD) || (this->light->right < DARK_THRESHOLD);
-    DEBUG_OUTPUT("LP: Dark? %s.\n", (this->light->dark ? "yes" : "no"));
-    this->calibration_timer = 0;
-    this->calibration_mask = 0;
+    DEBUG_OUTPUT("LP: Measurement: [ %d %d ]\n", self->light->left, self->light->right);
+    self->light->calibrated = 1;
+    self->light->dark = (self->light->left < DARK_THRESHOLD) || (self->light->right < DARK_THRESHOLD);
+    DEBUG_OUTPUT("LP: Dark? %s.\n", (self->light->dark ? "yes" : "no"));
+    self->calibration_timer = 0;
+    self->calibration_mask = 0;
   }
 }

@@ -21,32 +21,32 @@ DECLARE_MODULE_GET(light)
 DECLARE_MODULE_GET(state)
 DECLARE_MODULE_GET(control)
 
-void controller_execute(controller_t* this)
+void controller_execute(controller_t* self)
 {
   // get sensor data
-  this->get_line_data(global_get_line());
+  self->get_line_data(global_get_line());
   // execute all modules in the correct order
-  behavior_control_execute(&(this->behavior_control));
-  line_perception_execute(&(this->line_perception));
-  modeling_execute(&(this->modeling));
-  motor_control_execute(&(this->motor_control));
+  behavior_control_execute(&(self->behavior_control));
+  line_perception_execute(&(self->line_perception));
+  modeling_execute(&(self->modeling));
+  motor_control_execute(&(self->motor_control));
   // send commands to motors
-  this->set_motor_data(global_get_control());
+  self->set_motor_data(global_get_control());
 }
 
-int controller_init(controller_t* this, void (*get_line_data)(), void (*set_motor_data)())
+int controller_init(controller_t* self, void (*get_line_data)(), void (*set_motor_data)())
 {
   // initialize hardware interface
   if (get_line_data == NULL || set_motor_data == NULL) {
     DEBUG_OUTPUT("C: get_line_data or set_motor_data is NULL.\n");
     return -1;
   }
-  this->get_line_data = get_line_data;
-  this->set_motor_data = set_motor_data;
+  self->get_line_data = get_line_data;
+  self->set_motor_data = set_motor_data;
   // construct all modules
-  behavior_control_init(&(this->behavior_control));
-  line_perception_init(&(this->line_perception));
-  modeling_init(&(this->modeling));
-  motor_control_init(&(this->motor_control));
+  behavior_control_init(&(self->behavior_control));
+  line_perception_init(&(self->line_perception));
+  modeling_init(&(self->modeling));
+  motor_control_init(&(self->motor_control));
   return 0;
 }

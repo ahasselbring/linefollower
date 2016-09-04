@@ -51,81 +51,81 @@ static float get_global_line_sensor(const environment_t* environment, const floa
   return brightness;
 }
 
-void simulator_get_line_data(const simulator_t* this, unsigned int* left, unsigned int* right)
+void simulator_get_line_data(const simulator_t* self, unsigned int* left, unsigned int* right)
 {
-  float s = sinf(this->robot.theta), c = cosf(this->robot.theta);
-  float left_x = c * ROBOT_LINE_SENSOR_X - s * ROBOT_LINE_SENSOR_Y_ABS + this->robot.x, left_y = s * ROBOT_LINE_SENSOR_X + c * ROBOT_LINE_SENSOR_Y_ABS + this->robot.y;
-  float right_x = c * ROBOT_LINE_SENSOR_X + s * ROBOT_LINE_SENSOR_Y_ABS + this->robot.x, right_y = s * ROBOT_LINE_SENSOR_X - c * ROBOT_LINE_SENSOR_Y_ABS + this->robot.y;
-  *left = 800 + get_global_line_sensor(&(this->environment), left_x, left_y) * 200;
-  *right = 800 + get_global_line_sensor(&(this->environment), right_x, right_y) * 200;
+  float s = sinf(self->robot.theta), c = cosf(self->robot.theta);
+  float left_x = c * ROBOT_LINE_SENSOR_X - s * ROBOT_LINE_SENSOR_Y_ABS + self->robot.x, left_y = s * ROBOT_LINE_SENSOR_X + c * ROBOT_LINE_SENSOR_Y_ABS + self->robot.y;
+  float right_x = c * ROBOT_LINE_SENSOR_X + s * ROBOT_LINE_SENSOR_Y_ABS + self->robot.x, right_y = s * ROBOT_LINE_SENSOR_X - c * ROBOT_LINE_SENSOR_Y_ABS + self->robot.y;
+  *left = 800 + get_global_line_sensor(&(self->environment), left_x, left_y) * 200;
+  *right = 800 + get_global_line_sensor(&(self->environment), right_x, right_y) * 200;
 }
 
-void simulator_set_motor_data(simulator_t* this, const unsigned char left_speed, const unsigned char right_speed,
+void simulator_set_motor_data(simulator_t* self, const unsigned char left_speed, const unsigned char right_speed,
   const unsigned char left_mode, const unsigned char right_mode)
 {
-  this->robot.left_speed_request = left_speed;
-  this->robot.right_speed_request = right_speed;
-  this->robot.left_mode_request = left_mode;
-  this->robot.right_mode_request = right_mode;
+  self->robot.left_speed_request = left_speed;
+  self->robot.right_speed_request = right_speed;
+  self->robot.left_mode_request = left_mode;
+  self->robot.right_mode_request = right_mode;
 }
 
-void simulator_cycle(simulator_t* this, const float dt)
+void simulator_cycle(simulator_t* self, const float dt)
 {
-  float left_speed_real = ROBOT_MOTOR_SPEED_FACTOR * (float)(this->robot.left_speed_request) / 255;
-  float right_speed_real = ROBOT_MOTOR_SPEED_FACTOR * (float)(this->robot.right_speed_request) / 255;
-  if (this->robot.left_mode_request == 2) {
+  float left_speed_real = ROBOT_MOTOR_SPEED_FACTOR * (float)(self->robot.left_speed_request) / 255;
+  float right_speed_real = ROBOT_MOTOR_SPEED_FACTOR * (float)(self->robot.right_speed_request) / 255;
+  if (self->robot.left_mode_request == 2) {
     left_speed_real = -left_speed_real;
-  } else if (this->robot.left_mode_request != 1) {
+  } else if (self->robot.left_mode_request != 1) {
     left_speed_real = 0;
   }
-  if (this->robot.right_mode_request == 2) {
+  if (self->robot.right_mode_request == 2) {
     right_speed_real = -right_speed_real;
-  } else if (this->robot.right_mode_request != 1) {
+  } else if (self->robot.right_mode_request != 1) {
     right_speed_real = 0;
   }
   // TODO: simulate inertia of the motors, friction and some other real physics, i.e. modify *_speed_real
-  float s = sinf(this->robot.theta), c = cosf(this->robot.theta), moved_distance = dt * (left_speed_real + right_speed_real) / 2;
-  this->robot.x += c * moved_distance;
-  this->robot.y += s * moved_distance;
-  this->robot.theta += asinf(dt * (right_speed_real - left_speed_real) / (2 * ROBOT_WHEEL_Y_ABS));
+  float s = sinf(self->robot.theta), c = cosf(self->robot.theta), moved_distance = dt * (left_speed_real + right_speed_real) / 2;
+  self->robot.x += c * moved_distance;
+  self->robot.y += s * moved_distance;
+  self->robot.theta += asinf(dt * (right_speed_real - left_speed_real) / (2 * ROBOT_WHEEL_Y_ABS));
 }
 
-void simulator_print(const simulator_t* this)
+void simulator_print(const simulator_t* self)
 {
-  printf("X: %f\nY: %f\nA: %f\n", this->robot.x, this->robot.y, this->robot.theta);
+  printf("X: %f\nY: %f\nA: %f\n", self->robot.x, self->robot.y, self->robot.theta);
 }
 
-int simulator_init(simulator_t* this, const char* world)
+int simulator_init(simulator_t* self, const char* world)
 {
   FILE* f = fopen(world, "r");
   if (f == NULL) {
     puts("Could not open world file.");
     return -1;
   }
-  if (fscanf(f, "%f %f %f\n", &(this->robot.x), &(this->robot.y), &(this->robot.theta)) != 3) {
+  if (fscanf(f, "%f %f %f\n", &(self->robot.x), &(self->robot.y), &(self->robot.theta)) != 3) {
     puts("Could not read initial robot pose.");
     fclose(f);
     return -1;
   }
-  if (fscanf(f, "%u\n", &(this->environment.number_of_lines)) != 1) {
+  if (fscanf(f, "%u\n", &(self->environment.number_of_lines)) != 1) {
     puts("Could not read number of lines.");
     fclose(f);
     return -1;
   }
-  this->environment.lines = calloc(this->environment.number_of_lines, sizeof(struct environment_line));
-  if (this->environment.lines == NULL) {
+  self->environment.lines = calloc(self->environment.number_of_lines, sizeof(struct environment_line));
+  if (self->environment.lines == NULL) {
     puts("Could not allocate memory for lines.");
-    this->environment.number_of_lines = 0;
+    self->environment.number_of_lines = 0;
     fclose(f);
     return -1;
   }
   unsigned int i;
-  for (i = 0; i < this->environment.number_of_lines; i++) {
-    struct environment_line* l = &(this->environment.lines[i]);
+  for (i = 0; i < self->environment.number_of_lines; i++) {
+    struct environment_line* l = &(self->environment.lines[i]);
     if (fscanf(f, "%f %f %f %f\n", &(l->x1), &(l->y1), &(l->x2), &(l->y2)) != 4) {
       puts("Could not read line.");
-      free(this->environment.lines);
-      this->environment.number_of_lines = 0;
+      free(self->environment.lines);
+      self->environment.number_of_lines = 0;
       fclose(f);
       return -1;
     }
@@ -134,9 +134,9 @@ int simulator_init(simulator_t* this, const char* world)
   return 0;
 }
 
-void simulator_destroy(simulator_t* this)
+void simulator_destroy(simulator_t* self)
 {
-  if (this->environment.number_of_lines != 0) {
-    free(this->environment.lines);
+  if (self->environment.number_of_lines != 0) {
+    free(self->environment.lines);
   }
 }
