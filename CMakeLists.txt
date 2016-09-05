@@ -27,12 +27,14 @@ set(SIM_SOURCES
   sim/DebugOutput.cpp
   sim/main.cpp
   sim/MainWindow.cpp
+  sim/SceneView.cpp
   sim/SimulationThread.cpp
   sim/Simulator.cpp
 )
 
 set(SIM_HEADERS
   sim/MainWindow.hpp
+  sim/SceneView.hpp
   sim/SimulationThread.hpp
   sim/Simulator.hpp
   sim/Types.hpp

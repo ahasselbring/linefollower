@@ -8,9 +8,9 @@
 
 MainWindow::MainWindow() :
   QMainWindow(),
-  graphics_view_(new QPlainTextEdit)
+  scene_view_(new SceneView)
 {
-  setCentralWidget(graphics_view_);
+  setCentralWidget(scene_view_);
 
   create_actions();
   create_dock_windows();

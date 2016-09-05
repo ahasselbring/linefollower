@@ -4,6 +4,7 @@
 #include <QPlainTextEdit>
 #include <QMenu>
 
+#include "SceneView.hpp"
 #include "SimulationThread.hpp"
 
 class MainWindow : public QMainWindow {
@@ -34,7 +35,7 @@ private:
    */
   void create_dock_windows();
   /// a view with a 2D graphical representation of the scene
-  QPlainTextEdit* graphics_view_;
+  SceneView* scene_view_;
   /// a view where debug messages from the modules are printed
   QPlainTextEdit* debug_view_;
   /// a view where properties of the scene can be inspected and edited
