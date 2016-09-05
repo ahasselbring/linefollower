@@ -2,9 +2,7 @@
 #include <cstdio>
 #include <cstdlib>
 
-#include <QApplication>
-
-#include "MainWindow.hpp"
+#include "SimulationThread.hpp"
 
 extern "C" void debug_output(const char* fmt, ...)
 {
@@ -13,12 +11,6 @@ extern "C" void debug_output(const char* fmt, ...)
   va_start(args, fmt);
   vasprintf(&str, fmt, args);
   va_end(args);
-  MainWindow* main_window;
-  foreach (QWidget* widget, QApplication::topLevelWidgets()) {
-    main_window = qobject_cast<MainWindow*>(widget);
-    if (main_window != nullptr) {
-      main_window->add_to_debug(QString(str));
-    }
-  }
+  SimulationThread::debug_output(QString(str));
   free(str);
 }

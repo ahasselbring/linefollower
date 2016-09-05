@@ -19,6 +19,7 @@ void Environment::load(const std::string& path)
   f >> initial_pose_.position.x >> initial_pose_.position.y >> initial_pose_.heading;
   unsigned int number_of_lines = 0;
   f >> number_of_lines;
+  lines_.clear();
   lines_.reserve(number_of_lines);
   for (unsigned int i = 0; i < number_of_lines; i++) {
     Line2D line;

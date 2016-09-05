@@ -13,11 +13,13 @@ MainWindow::MainWindow() :
   setCentralWidget(graphics_view_);
 
   create_actions();
-  create_status_bar();
   create_dock_windows();
 
   setWindowTitle(tr("Simulator"));
   setUnifiedTitleAndToolBarOnMac(true);
+
+  // It seems that a queued connection has to be used when the signal is emitted by another thread.
+  connect(&simulation_thread_, SIGNAL(add_to_debug(const QString&)), this, SLOT(add_to_debug(const QString&)), Qt::QueuedConnection);
 }
 
 void MainWindow::add_to_debug(const QString& str)
@@ -48,35 +50,30 @@ void MainWindow::create_actions()
   // Add start action to simulation menu and simulation toolbar.
   const QIcon start_icon = QIcon::fromTheme("document-open");
   QAction* start_action = new QAction(start_icon, tr("Start"), this);
-  connect(start_action, &QAction::triggered, this, &MainWindow::start);
+  connect(start_action, &QAction::triggered, &simulation_thread_, &SimulationThread::start_simulation);
   simulation_menu->addAction(start_action);
   simulation_tool_bar->addAction(start_action);
   // Add stop action to simulation menu and simulation toolbar.
   const QIcon stop_icon = QIcon::fromTheme("document-open");
   QAction* stop_action = new QAction(stop_icon, tr("Stop"), this);
-  connect(stop_action, &QAction::triggered, this, &MainWindow::stop);
+  connect(stop_action, &QAction::triggered, &simulation_thread_, &SimulationThread::stop_simulation);
   simulation_menu->addAction(stop_action);
   simulation_tool_bar->addAction(stop_action);
   // Add step action to simulation menu and simulation toolbar.
   const QIcon step_icon = QIcon::fromTheme("document-open");
   QAction* step_action = new QAction(step_icon, tr("Step"), this);
-  connect(step_action, &QAction::triggered, this, &MainWindow::step);
+  connect(step_action, &QAction::triggered, &simulation_thread_, &SimulationThread::step_simulation);
   simulation_menu->addAction(step_action);
   simulation_tool_bar->addAction(step_action);
   // Add reset action to simulation menu and simulation toolbar.
   const QIcon reset_icon = QIcon::fromTheme("document-open");
   QAction* reset_action = new QAction(reset_icon, tr("Reset"), this);
-  connect(reset_action, &QAction::triggered, this, &MainWindow::reset);
+  connect(reset_action, &QAction::triggered, &simulation_thread_, &SimulationThread::reset_simulation);
   simulation_menu->addAction(reset_action);
   simulation_tool_bar->addAction(reset_action);
 
   // Add view menu.
   view_menu_ = menuBar()->addMenu(tr("&View"));
-}
-
-void MainWindow::create_status_bar()
-{
-  statusBar()->showMessage(tr("Simulation stopped"));
 }
 
 void MainWindow::create_dock_windows()
@@ -102,28 +99,6 @@ void MainWindow::open()
 {
   QString file_name = QFileDialog::getOpenFileName(this);
   if (!file_name.isEmpty()) {
-    simulator_.load_environment(file_name.toStdString());
+    simulation_thread_.load_environment(file_name);
   }
-}
-
-void MainWindow::start()
-{
-  // TODO: Maybe start a thread?
-  statusBar()->showMessage(tr("Simulating"));
-}
-
-void MainWindow::stop()
-{
-  // TODO: Maybe stop a thread?
-  statusBar()->showMessage(tr("Simulation stopped"));
-}
-
-void MainWindow::step()
-{
-  simulator_.cycle();
-}
-
-void MainWindow::reset()
-{
-  simulator_.reset();
 }

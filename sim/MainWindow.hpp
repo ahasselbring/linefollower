@@ -4,7 +4,7 @@
 #include <QPlainTextEdit>
 #include <QMenu>
 
-#include "Simulator.hpp"
+#include "SimulationThread.hpp"
 
 class MainWindow : public QMainWindow {
   Q_OBJECT
@@ -13,6 +13,7 @@ public:
    * @brief MainWindow creates the window and everything else
    */
   MainWindow();
+public slots:
   /**
    * @brief add_to_debug adds a string at the end of the debug view
    * @param str the string that shall be added
@@ -23,31 +24,11 @@ private slots:
    * @brief open loads a new environment with a file dialog
    */
   void open();
-  /**
-   * @brief start starts the continuous simulation
-   */
-  void start();
-  /**
-   * @brief stop stops the continuous simulation
-   */
-  void stop();
-  /**
-   * @brief step executes one simulation cycle
-   */
-  void step();
-  /**
-   * @brief reset resets the simulator
-   */
-  void reset();
 private:
   /**
    * @brief create_actions creates the menus and toolbars
    */
   void create_actions();
-  /**
-   * @brief create_status_bar creates the status bar
-   */
-  void create_status_bar();
   /**
    * @brief create_dock_windows creates the debug and property view
    */
@@ -60,6 +41,6 @@ private:
   QPlainTextEdit* property_view_;
   /// the menu of the views
   QMenu* view_menu_;
-  /// the actual simulator
-  Simulator simulator_;
+  /// the thread in which the simulation happens
+  SimulationThread simulation_thread_;
 };
