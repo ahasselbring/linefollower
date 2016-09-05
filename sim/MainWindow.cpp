@@ -19,14 +19,7 @@ MainWindow::MainWindow(QWidget* parent) :
   setUnifiedTitleAndToolBarOnMac(true);
 
   // It seems that a queued connection has to be used when the signal is emitted by another thread.
-  connect(&simulation_thread_, SIGNAL(add_to_debug(const QString&)), this, SLOT(add_to_debug(const QString&)), Qt::QueuedConnection);
-}
-
-void MainWindow::add_to_debug(const QString& str)
-{
-  debug_view_->moveCursor(QTextCursor::End);
-  debug_view_->insertPlainText(str);
-  debug_view_->moveCursor(QTextCursor::End);
+  connect(&simulation_thread_, SIGNAL(add_to_debug(const QString&)), debug_view_, SLOT(print(const QString&)), Qt::QueuedConnection);
 }
 
 void MainWindow::create_actions()
@@ -80,9 +73,7 @@ void MainWindow::create_dock_windows()
 {
   QDockWidget* dock = new QDockWidget(tr("Debug Output"), this);
   dock->setAllowedAreas(Qt::BottomDockWidgetArea);
-  debug_view_ = new QPlainTextEdit(dock);
-  debug_view_->setReadOnly(true);
-  debug_view_->setMaximumBlockCount(1000);
+  debug_view_ = new DebugView(dock);
   dock->setWidget(debug_view_);
   addDockWidget(Qt::BottomDockWidgetArea, dock);
   view_menu_->addAction(dock->toggleViewAction());

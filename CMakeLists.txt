@@ -24,6 +24,7 @@ set(HEADERS
 )
 
 set(SIM_SOURCES
+  sim/DebugView.cpp
   sim/DebugOutput.cpp
   sim/main.cpp
   sim/MainWindow.cpp
@@ -33,6 +34,7 @@ set(SIM_SOURCES
 )
 
 set(SIM_HEADERS
+  sim/DebugView.hpp
   sim/MainWindow.hpp
   sim/SceneView.hpp
   sim/SimulationThread.hpp

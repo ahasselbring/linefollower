@@ -4,6 +4,7 @@
 #include <QPlainTextEdit>
 #include <QMenu>
 
+#include "DebugView.hpp"
 #include "SceneView.hpp"
 #include "SimulationThread.hpp"
 
@@ -15,12 +16,6 @@ public:
    * @param parent the parent widget
    */
   MainWindow(QWidget* parent = 0);
-public slots:
-  /**
-   * @brief add_to_debug adds a string at the end of the debug view
-   * @param str the string that shall be added
-   */
-  void add_to_debug(const QString& str);
 private slots:
   /**
    * @brief open loads a new environment with a file dialog
@@ -38,7 +33,7 @@ private:
   /// a view with a 2D graphical representation of the scene
   SceneView* scene_view_;
   /// a view where debug messages from the modules are printed
-  QPlainTextEdit* debug_view_;
+  DebugView* debug_view_;
   /// a view where properties of the scene can be inspected and edited
   QPlainTextEdit* property_view_;
   /// the menu of the views
