@@ -6,9 +6,9 @@
 
 #include "MainWindow.hpp"
 
-MainWindow::MainWindow() :
-  QMainWindow(),
-  scene_view_(new SceneView)
+MainWindow::MainWindow(QWidget* parent) :
+  QMainWindow(parent),
+  scene_view_(new SceneView(this))
 {
   setCentralWidget(scene_view_);
 

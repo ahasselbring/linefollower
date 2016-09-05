@@ -2,8 +2,8 @@
 
 #include "SceneView.hpp"
 
-SceneView::SceneView() :
-  QWidget()
+SceneView::SceneView(QWidget* parent) :
+  QWidget(parent)
 {
 }
 

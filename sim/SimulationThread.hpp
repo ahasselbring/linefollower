@@ -11,8 +11,9 @@ class SimulationThread : public QThread {
 public:
   /**
    * @brief SimulationThread initializes members and starts the thread
+   * @param parent the parent object
    */
-  SimulationThread();
+  SimulationThread(QObject* parent = 0);
   /**
    * @brief ~SimulationThread kills the thread
    */

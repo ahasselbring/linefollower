@@ -12,8 +12,9 @@ class MainWindow : public QMainWindow {
 public:
   /**
    * @brief MainWindow creates the window and everything else
+   * @param parent the parent widget
    */
-  MainWindow();
+  MainWindow(QWidget* parent = 0);
 public slots:
   /**
    * @brief add_to_debug adds a string at the end of the debug view

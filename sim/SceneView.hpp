@@ -7,8 +7,9 @@ class SceneView : public QWidget {
 public:
   /**
    * @brief SceneView initializes members
+   * @param parent the parent widget
    */
-  SceneView();
+  SceneView(QWidget* parent = 0);
 protected:
   /**
    * @brief paintEvent is called when the widget is painted

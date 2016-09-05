@@ -2,8 +2,8 @@
 
 SimulationThread* SimulationThread::instance_ = nullptr;
 
-SimulationThread::SimulationThread() :
-  QThread(),
+SimulationThread::SimulationThread(QObject* parent) :
+  QThread(parent),
   request_(IDLE)
 {
   // The instance is needed for debug_output.
