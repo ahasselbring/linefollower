@@ -13,8 +13,8 @@ void SceneView::paintEvent(QPaintEvent*)
 {
   QPainter painter(this);
   painter.fillRect(QRect(0, 0, width() - 1, height() - 1), Qt::blue);
-  unsigned int pixel_x = width() / 2 - (robot_pose_.position.y - center_.y) * scale_;
-  unsigned int pixel_y = height() / 2 - (robot_pose_.position.x - center_.x) * scale_;
+  unsigned int pixel_x = width() / 2 + origin_.x() - robot_pose_.position.y * scale_;
+  unsigned int pixel_y = height() / 2 + origin_.y() - robot_pose_.position.x * scale_;
   painter.fillRect(QRect(pixel_x - 5, pixel_y - 5, 10, 10), Qt::red);
 }
 
@@ -30,6 +30,31 @@ void SceneView::wheelEvent(QWheelEvent* event)
   update();
 }
 #endif
+
+void SceneView::mousePressEvent(QMouseEvent* event)
+{
+  if (event->button() == Qt::LeftButton) {
+    last_drag_position_ = event->pos();
+  }
+}
+
+void SceneView::mouseMoveEvent(QMouseEvent* event)
+{
+  if (event->buttons() & Qt::LeftButton) {
+    origin_ += event->pos() - last_drag_position_;
+    last_drag_position_ = event->pos();
+    update();
+  }
+}
+
+void SceneView::mouseReleaseEvent(QMouseEvent* event)
+{
+  if (event->button() == Qt::LeftButton) {
+    origin_ += event->pos() - last_drag_position_;
+    last_drag_position_ = QPoint();
+    update();
+  }
+}
 
 void SceneView::post_cycle(const SimulatorCycleBundle& bundle)
 {

@@ -29,11 +29,25 @@ protected:
    */
   void wheelEvent(QWheelEvent*) Q_DECL_OVERRIDE;
 #endif
+  /**
+   * @brief mousePressEvent is called when a mouse button is pressed above the widget
+   */
+  void mousePressEvent(QMouseEvent*) Q_DECL_OVERRIDE;
+  /**
+   * @brief mouseMoveEvent is called when the mouse is moved above the widget
+   */
+  void mouseMoveEvent(QMouseEvent*) Q_DECL_OVERRIDE;
+  /**
+   * @brief mouseReleaseEvent is called when a mouse button is released above the widget
+   */
+  void mouseReleaseEvent(QMouseEvent*) Q_DECL_OVERRIDE;
 private:
   /// the current pose of the robot
   Pose2D robot_pose_;
-  // the global coordinates that represent the center of the view
-  Point2D center_;
-  // scale factor: pixel coordinate = scale_ * global coordinate
+  /// the pixel coordinates of the global coordinate system origin relative to the center of the widget
+  QPoint origin_;
+  /// scale factor: pixel coordinate = scale_ * global coordinate
   float scale_;
+  /// the last position of the mouse while dragging, to compute the delta
+  QPoint last_drag_position_;
 };
