@@ -52,6 +52,12 @@ protected:
    */
   void mouseReleaseEvent(QMouseEvent*) Q_DECL_OVERRIDE;
 private:
+  /**
+   * @brief global_to_pixel transforms coordinates from the global coordinate system to pixel coordinates
+   * @param point a point in global simulation coordinates
+   * @return the corresponding pixel
+   */
+  QPoint global_to_pixel(const Point2D& point) const;
   /// the current pose of the robot
   Pose2D robot_pose_;
   /// the pose of the robot after a reset

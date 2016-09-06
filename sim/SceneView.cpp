@@ -12,10 +12,8 @@ SceneView::SceneView(QWidget* parent) :
 void SceneView::paintEvent(QPaintEvent*)
 {
   QPainter painter(this);
-  painter.fillRect(QRect(0, 0, width() - 1, height() - 1), Qt::blue);
-  unsigned int pixel_x = width() / 2 + origin_.x() - robot_pose_.position.y * scale_;
-  unsigned int pixel_y = height() / 2 + origin_.y() - robot_pose_.position.x * scale_;
-  painter.fillRect(QRect(pixel_x - 5, pixel_y - 5, 10, 10), Qt::red);
+  painter.fillRect(QRect(0, 0, width() - 1, height() - 1), Qt::white);
+  painter.fillRect(QRect(global_to_pixel(robot_pose_.position) - QPoint(5, 5), QSize(10, 10)), Qt::red);
 }
 
 #ifndef QT_NO_WHEELEVENT
@@ -54,6 +52,12 @@ void SceneView::mouseReleaseEvent(QMouseEvent* event)
     last_drag_position_ = QPoint();
     update();
   }
+}
+
+QPoint SceneView::global_to_pixel(const Point2D& point) const
+{
+  // TODO: Something is wrong with zooming, namely the origin isn't scaled.
+  return origin_ + QPoint(width() / 2 - point.y * scale_, height() / 2 - point.x * scale_);
 }
 
 void SceneView::post_cycle(const SimulatorCycleBundle& bundle)
