@@ -31,6 +31,10 @@ signals:
    * @param bundle a set of data about the new environment
    */
   void post_load(const SimulatorLoadBundle& bundle);
+  /**
+   * @brief post_reset is emitted after the robot is reset
+   */
+  void post_reset();
 public slots:
   /**
    * @brief start_simulation starts continuous simulation

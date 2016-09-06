@@ -24,6 +24,10 @@ public slots:
    * @param bundle a set of data about the new environment
    */
   void post_load(const SimulatorLoadBundle& bundle);
+  /**
+   * @brief post_reset resets the view and the robot pose
+   */
+  void post_reset();
 protected:
   /**
    * @brief paintEvent is called when the widget is painted

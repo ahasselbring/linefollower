@@ -71,8 +71,10 @@ void SimulationThread::run()
       SimulatorLoadBundle bundle;
       simulator_.load_environment(path.toStdString(), bundle);
       emit post_load(bundle);
+      emit post_reset();
     } else if (request & RESET) {
       simulator_.reset();
+      emit post_reset();
     }
     if (request & (RUN | STEP)) {
       SimulatorCycleBundle bundle;

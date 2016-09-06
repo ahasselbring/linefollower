@@ -68,3 +68,11 @@ void SceneView::post_load(const SimulatorLoadBundle& bundle)
   lines_ = bundle.lines;
   update();
 }
+
+void SceneView::post_reset()
+{
+  robot_pose_ = initial_pose_;
+  scale_ = 300.f;
+  origin_ = QPoint(0, 0);
+  update();
+}
