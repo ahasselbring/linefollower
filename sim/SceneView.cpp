@@ -61,3 +61,10 @@ void SceneView::post_cycle(const SimulatorCycleBundle& bundle)
   robot_pose_ = bundle.robot_pose;
   update();
 }
+
+void SceneView::post_load(const SimulatorLoadBundle& bundle)
+{
+  initial_pose_ = bundle.initial_pose;
+  lines_ = bundle.lines;
+  update();
+}

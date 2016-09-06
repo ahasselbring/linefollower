@@ -3,6 +3,7 @@
 #include <QWidget>
 
 #include "SimulatorCycleBundle.hpp"
+#include "SimulatorLoadBundle.hpp"
 
 class SceneView : public QWidget {
   Q_OBJECT
@@ -18,6 +19,11 @@ public slots:
    * @param bundle a set of data about the state of the simulation
    */
   void post_cycle(const SimulatorCycleBundle& bundle);
+  /**
+   * @brief post_load updates the view with the new environment information
+   * @param bundle a set of data about the new environment
+   */
+  void post_load(const SimulatorLoadBundle& bundle);
 protected:
   /**
    * @brief paintEvent is called when the widget is painted
@@ -44,6 +50,10 @@ protected:
 private:
   /// the current pose of the robot
   Pose2D robot_pose_;
+  /// the pose of the robot after a reset
+  Pose2D initial_pose_;
+  /// the black lines on the floor
+  std::vector<Line2D> lines_;
   /// the pixel coordinates of the global coordinate system origin relative to the center of the widget
   QPoint origin_;
   /// scale factor: pixel coordinate = scale_ * global coordinate

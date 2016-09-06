@@ -11,7 +11,7 @@
 Robot* Robot::instance_ = nullptr;
 
 
-void Environment::load(const std::string& path)
+void Environment::load(const std::string& path, SimulatorLoadBundle& bundle)
 {
   std::ifstream f(path);
   if (!f.is_open()) {
@@ -30,6 +30,8 @@ void Environment::load(const std::string& path)
     lines_.push_back(line);
   }
   f.close();
+  bundle.initial_pose = initial_pose_;
+  bundle.lines = lines_;
 }
 
 float Environment::get_brightness(const Point2D& position) const
@@ -189,8 +191,8 @@ void Simulator::cycle(SimulatorCycleBundle& bundle)
   robot_.cycle(dt_, bundle);
 }
 
-void Simulator::load_environment(const std::string& path)
+void Simulator::load_environment(const std::string& path, SimulatorLoadBundle& bundle)
 {
-  environment_.load(path);
+  environment_.load(path, bundle);
   robot_.reset();
 }

@@ -5,6 +5,7 @@
 #include <mutex>
 
 #include "SimulatorCycleBundle.hpp"
+#include "SimulatorLoadBundle.hpp"
 #include "Types.hpp"
 
 extern "C" {
@@ -16,8 +17,9 @@ public:
   /**
    * @brief load loads the environment from a file
    * @param path the path the the file
+   * @param bundle a set of data about the new environment
    */
-  void load(const std::string& path);
+  void load(const std::string& path, SimulatorLoadBundle& bundle);
   /**
    * @brief get_brightness computes the brightness on the surface of the ground in [0,1]
    * @param position the position at which the brightness is requested in the global coordinate system
@@ -145,8 +147,9 @@ public:
   /**
    * @brief load_environment loads the environment from a file
    * @param path the path the the file
+   * @param bundle a set of data about the new environment
    */
-  void load_environment(const std::string& path);
+  void load_environment(const std::string& path, SimulatorLoadBundle& bundle);
 private:
   /// the timestep of one simulation cycle
   static constexpr float dt_ = 0.01;

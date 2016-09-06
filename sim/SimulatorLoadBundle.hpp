@@ -8,7 +8,7 @@
 
 struct SimulatorLoadBundle {
   /// the pose of the robot after resetting
-  Pose2D initial_robot_pose;
+  Pose2D initial_pose;
   /// the lines on the floor
   std::vector<Line2D> lines;
 };

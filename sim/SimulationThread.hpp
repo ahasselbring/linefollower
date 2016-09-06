@@ -6,6 +6,7 @@
 
 #include "Simulator.hpp"
 #include "SimulatorCycleBundle.hpp"
+#include "SimulatorLoadBundle.hpp"
 
 class SimulationThread : public QThread {
   Q_OBJECT
@@ -25,6 +26,11 @@ signals:
    * @param bundle a set of data about the state of the simulation
    */
   void post_cycle(const SimulatorCycleBundle& bundle);
+  /**
+   * @brief post_load is emitted after a new environment has been loaded
+   * @param bundle a set of data about the new environment
+   */
+  void post_load(const SimulatorLoadBundle& bundle);
 public slots:
   /**
    * @brief start_simulation starts continuous simulation

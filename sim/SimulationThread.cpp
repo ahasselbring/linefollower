@@ -68,7 +68,9 @@ void SimulationThread::run()
       return;
     }
     if (request & LOAD) {
-      simulator_.load_environment(path.toStdString());
+      SimulatorLoadBundle bundle;
+      simulator_.load_environment(path.toStdString(), bundle);
+      emit post_load(bundle);
     } else if (request & RESET) {
       simulator_.reset();
     }
