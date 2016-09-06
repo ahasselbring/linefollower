@@ -80,7 +80,7 @@ void SimulationThread::run()
       SimulatorCycleBundle bundle;
       simulator_.cycle(bundle);
       emit post_cycle(bundle);
-      msleep(50);
+      msleep(10);
     }
   }
 }
