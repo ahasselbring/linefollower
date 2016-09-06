@@ -44,6 +44,10 @@ set(SIM_HEADERS
   sim/Types.hpp
 )
 
+set(SIM_RESOURCES
+  sim/Resources.qrc
+)
+
 set(ROBOT_SOURCES
   robot/asuro.c
   robot/main.c
@@ -60,9 +64,10 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 if(SIM)
   add_definitions(-DTARGET_SIMULATOR)
   set(CMAKE_AUTOMOC ON)
+  set(CMAKE_AUTORCC ON)
   find_package(Qt5Widgets REQUIRED)
 
-  add_executable(line ${SOURCES} ${HEADERS} ${SIM_SOURCES} ${SIM_HEADERS})
+  add_executable(line ${SOURCES} ${HEADERS} ${SIM_SOURCES} ${SIM_HEADERS} ${SIM_RESOURCES})
   target_link_libraries(line m)
   target_link_libraries(line Qt5::Widgets)
 elseif(ROBOT)
