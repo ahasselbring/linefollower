@@ -15,9 +15,24 @@ PropertyView::PropertyView(QWidget* parent) :
   setItem(2, 0, new QTableWidgetItem("heading"));
 }
 
+void PropertyView::set_pose(const Pose2D& pose)
+{
+  setItem(0, 1, new QTableWidgetItem(QString::number(pose.position.x)));
+  setItem(1, 1, new QTableWidgetItem(QString::number(pose.position.y)));
+  setItem(2, 1, new QTableWidgetItem(QString::number(pose.heading)));
+}
+
 void PropertyView::post_cycle(const SimulatorCycleBundle& bundle)
 {
-  setItem(0, 1, new QTableWidgetItem(QString::number(bundle.robot_pose.position.x)));
-  setItem(1, 1, new QTableWidgetItem(QString::number(bundle.robot_pose.position.y)));
-  setItem(2, 1, new QTableWidgetItem(QString::number(bundle.robot_pose.heading)));
+  set_pose(bundle.robot_pose);
+}
+
+void PropertyView::post_load(const SimulatorLoadBundle& bundle)
+{
+  initial_pose_ = bundle.initial_pose;
+}
+
+void PropertyView::post_reset()
+{
+  set_pose(initial_pose_);
 }

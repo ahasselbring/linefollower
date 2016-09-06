@@ -25,12 +25,19 @@ MainWindow::MainWindow(QWidget* parent) :
     debug_view_, SLOT(post_cycle(const SimulatorCycleBundle&)), Qt::QueuedConnection);
   connect(&simulation_thread_, SIGNAL(post_cycle(const SimulatorCycleBundle&)),
     property_view_, SLOT(post_cycle(const SimulatorCycleBundle&)), Qt::QueuedConnection);
+
   connect(&simulation_thread_, SIGNAL(post_load(const SimulatorLoadBundle&)),
     scene_view_, SLOT(post_load(const SimulatorLoadBundle&)), Qt::QueuedConnection);
+  connect(&simulation_thread_, SIGNAL(post_load(const SimulatorLoadBundle&)),
+    property_view_, SLOT(post_load(const SimulatorLoadBundle&)), Qt::QueuedConnection);
+
+
   connect(&simulation_thread_, SIGNAL(post_reset()),
     scene_view_, SLOT(post_reset()), Qt::QueuedConnection);
   connect(&simulation_thread_, SIGNAL(post_reset()),
     debug_view_, SLOT(post_reset()), Qt::QueuedConnection);
+  connect(&simulation_thread_, SIGNAL(post_reset()),
+    property_view_, SLOT(post_reset()), Qt::QueuedConnection);
 }
 
 void MainWindow::create_actions()
