@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget* parent) :
   setUnifiedTitleAndToolBarOnMac(true);
 
   // It seems that a queued connection has to be used when the signal is emitted by another thread.
+  connect(&simulation_thread_, SIGNAL(post_cycle(const SimulatorCycleBundle&)), scene_view_, SLOT(post_cycle(const SimulatorCycleBundle&)), Qt::QueuedConnection);
   connect(&simulation_thread_, SIGNAL(post_cycle(const SimulatorCycleBundle&)), debug_view_, SLOT(post_cycle(const SimulatorCycleBundle&)), Qt::QueuedConnection);
   connect(&simulation_thread_, SIGNAL(post_cycle(const SimulatorCycleBundle&)), property_view_, SLOT(post_cycle(const SimulatorCycleBundle&)), Qt::QueuedConnection);
 }
