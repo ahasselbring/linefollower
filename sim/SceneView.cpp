@@ -5,6 +5,7 @@
 
 SceneView::SceneView(QWidget* parent) :
   QWidget(parent),
+  robot_pixmap_(":/Images/Robot.png"),
   scale_(300.f)
 {
 }
@@ -20,7 +21,11 @@ void SceneView::paintEvent(QPaintEvent*)
     // TODO: Check if this is really correct.
     painter.drawLine(global_to_pixel(line.p1), global_to_pixel(line.p2));
   }
-  painter.fillRect(QRect(global_to_pixel(robot_pose_.position) - QPoint(5, 5), QSize(10, 10)), Qt::red);
+  // TODO: Get robot / pixmap dimensions from somewhere else
+  QSize pixel_size(0.122 * scale_, 0.117 * scale_);
+  QPoint origin_in_pixmap(0.061 * scale_, 0.093 * scale_);
+  QRect robot_rect(global_to_pixel(robot_pose_.position) - origin_in_pixmap, pixel_size);
+  painter.drawPixmap(robot_rect, robot_pixmap_);
 }
 
 #ifndef QT_NO_WHEELEVENT

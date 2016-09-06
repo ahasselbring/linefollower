@@ -66,6 +66,8 @@ private:
   std::vector<Line2D> lines_;
   /// the width of a line
   float line_width_;
+  /// a pixmap for the robot
+  QPixmap robot_pixmap_;
   /// the pixel coordinates of the global coordinate system origin relative to the center of the widget
   QPoint origin_;
   /// scale factor: pixel coordinate = scale_ * global coordinate
