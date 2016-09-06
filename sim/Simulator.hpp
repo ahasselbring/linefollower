@@ -4,6 +4,7 @@
 #include <vector>
 #include <mutex>
 
+#include "SimulatorCycleBundle.hpp"
 #include "Types.hpp"
 
 extern "C" {
@@ -57,9 +58,9 @@ public:
   /**
    * @brief cycle executes a simulation cycle of the robot including the RCP
    * @param dt the amount of time per controller cycle
-   * @return the debug messages from the cycle
+   * @param bundle a set of data about the state of the simulation
    */
-  std::string cycle(const float dt);
+  void cycle(const float dt, SimulatorCycleBundle& bundle);
   /**
    * @brief debug_print_wrap is a static wrapper around debug_print
    * @param str the string that should be added to the debug output
@@ -138,9 +139,9 @@ public:
   void reset();
   /**
    * @brief cycle executes a simulation cycle
-   * @return the debug messages from the cycle
+   * @param bundle a set of data about the state of the simulation
    */
-  std::string cycle();
+  void cycle(SimulatorCycleBundle& bundle);
   /**
    * @brief load_environment loads the environment from a file
    * @param path the path the the file

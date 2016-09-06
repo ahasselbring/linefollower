@@ -40,6 +40,7 @@ set(SIM_HEADERS
   sim/SceneView.hpp
   sim/SimulationThread.hpp
   sim/Simulator.hpp
+  sim/SimulatorCycleBundle.hpp
   sim/Types.hpp
 )
 

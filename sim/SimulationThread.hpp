@@ -5,6 +5,7 @@
 #include <QWaitCondition>
 
 #include "Simulator.hpp"
+#include "SimulatorCycleBundle.hpp"
 
 class SimulationThread : public QThread {
   Q_OBJECT
@@ -21,9 +22,9 @@ public:
 signals:
   /**
    * @brief post_cycle is emitted after a complete cycle has been simulated
-   * @param debug_output the debug output of that cycle
+   * @param bundle a set of data about the state of the simulation
    */
-  void post_cycle(const QString& debug_output);
+  void post_cycle(const SimulatorCycleBundle& bundle);
 public slots:
   /**
    * @brief start_simulation starts continuous simulation

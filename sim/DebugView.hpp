@@ -2,6 +2,8 @@
 
 #include <QPlainTextEdit>
 
+#include "SimulatorCycleBundle.hpp"
+
 class DebugView : public QPlainTextEdit {
   Q_OBJECT
 public:
@@ -12,8 +14,8 @@ public:
   DebugView(QWidget* parent = 0);
 public slots:
   /**
-   * @brief print adds some text to the end of the view
-   * @param str the string to add
+   * @brief post_cycle adds the debug output of the bundle to the end of the view
+   * @param bundle a set of data about the state of the simulation
    */
-  void print(const QString& str);
+  void post_cycle(const SimulatorCycleBundle& bundle);
 };

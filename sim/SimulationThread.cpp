@@ -73,8 +73,9 @@ void SimulationThread::run()
       simulator_.reset();
     }
     if (request & (RUN | STEP)) {
-      QString debug_output = QString::fromStdString(simulator_.cycle());
-      emit post_cycle(debug_output);
+      SimulatorCycleBundle bundle;
+      simulator_.cycle(bundle);
+      emit post_cycle(bundle);
       msleep(50);
     }
   }

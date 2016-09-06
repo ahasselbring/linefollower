@@ -81,7 +81,7 @@ void Robot::reset()
   debug_output_.clear();
 }
 
-std::string Robot::cycle(const float dt)
+void Robot::cycle(const float dt, SimulatorCycleBundle& bundle)
 {
   std::lock_guard<std::mutex> lg(mutex_);
   debug_output_.clear();
@@ -108,7 +108,9 @@ std::string Robot::cycle(const float dt)
   pose_.position.y += s * moved_distance;
   // TODO: NaN?
   pose_.heading += std::asin(dt * (right_speed_real - left_speed_real) / (2 * wheel_y_abs_));
-  return debug_output_;
+  // Update the state bundle.
+  bundle.robot_pose = pose_;
+  bundle.debug_output = debug_output_;
 }
 
 void Robot::get_line_data_wrap(line_t* line)
@@ -182,9 +184,9 @@ void Simulator::reset()
   robot_.reset();
 }
 
-std::string Simulator::cycle()
+void Simulator::cycle(SimulatorCycleBundle& bundle)
 {
-  return robot_.cycle(dt_);
+  robot_.cycle(dt_, bundle);
 }
 
 void Simulator::load_environment(const std::string& path)

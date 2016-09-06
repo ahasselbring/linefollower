@@ -7,9 +7,9 @@ DebugView::DebugView(QWidget* parent) :
   setMaximumBlockCount(1000);
 }
 
-void DebugView::print(const QString& str)
+void DebugView::post_cycle(const SimulatorCycleBundle& bundle)
 {
   moveCursor(QTextCursor::End);
-  insertPlainText(str);
+  insertPlainText(QString::fromStdString(bundle.debug_output));
   moveCursor(QTextCursor::End);
 }
