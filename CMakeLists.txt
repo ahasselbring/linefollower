@@ -41,6 +41,7 @@ set(SIM_HEADERS
   sim/SimulationThread.hpp
   sim/Simulator.hpp
   sim/SimulatorCycleBundle.hpp
+  sim/SimulatorLoadBundle.hpp
   sim/Types.hpp
 )
 
