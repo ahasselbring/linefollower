@@ -57,8 +57,14 @@ public:
   /**
    * @brief cycle executes a simulation cycle of the robot including the RCP
    * @param dt the amount of time per controller cycle
+   * @return the debug messages from the cycle
    */
-  void cycle(const float dt);
+  std::string cycle(const float dt);
+  /**
+   * @brief debug_print_wrap is a static wrapper around debug_print
+   * @param str the string that should be added to the debug output
+   */
+  static void debug_print_wrap(const std::string& str);
 private:
   typedef motor_mode_t MotorMode;
   /**
@@ -81,6 +87,11 @@ private:
    * @param control the control data type
    */
   void set_motor_data(const control_t* control);
+  /**
+   * @brief debug_print adds a string to the debug output
+   * @param str the string that should be added
+   */
+  void debug_print(const std::string& str);
   /// the x coordinate of the line sensors in robot coordinates [m]
   static constexpr float line_sensor_x_ = 0.1;
   /// the absolute value of the y coordinate of the line sensors in robot coordinates [m]
@@ -109,6 +120,8 @@ private:
   MotorMode left_mode_request_;
   /// the desired mode of the right motor
   MotorMode right_mode_request_;
+  /// the debug output from the last cycle
+  std::string debug_output_;
   /// mutex to ensure there are no races
   mutable std::mutex mutex_;
 };
@@ -125,8 +138,9 @@ public:
   void reset();
   /**
    * @brief cycle executes a simulation cycle
+   * @return the debug messages from the cycle
    */
-  void cycle();
+  std::string cycle();
   /**
    * @brief load_environment loads the environment from a file
    * @param path the path the the file

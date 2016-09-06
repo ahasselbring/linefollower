@@ -23,8 +23,8 @@ void name##_execute(name##_t* self);
 #define MODULE_EXECUTE(name) void name##_execute(name##_t* self)
 
 #if defined TARGET_SIMULATOR
-void debug_output(const char* fmt, ...);
-#define DEBUG_PRINT(...) debug_output(__VA_ARGS__)
+void debug_print(const char* fmt, ...);
+#define DEBUG_PRINT(...) debug_print(__VA_ARGS__)
 #else
 #define DEBUG_PRINT(...)
 #endif

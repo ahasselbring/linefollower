@@ -1,16 +1,9 @@
 #include "SimulationThread.hpp"
 
-SimulationThread* SimulationThread::instance_ = nullptr;
-
 SimulationThread::SimulationThread(QObject* parent) :
   QThread(parent),
   request_(IDLE)
 {
-  // The instance is needed for debug_output.
-  if (instance_ != nullptr) {
-    throw std::runtime_error("SimulationThread::instance_ is not NULL but a SimulationThread is constructed!");
-  }
-  instance_ = this;
   start(NormalPriority);
 }
 
@@ -23,13 +16,6 @@ SimulationThread::~SimulationThread()
   mutex_.unlock();
   // Wait until the thread is done.
   wait();
-  // Reset instance.
-  instance_ = nullptr;
-}
-
-void SimulationThread::debug_output(const QString& str)
-{
-  instance_->emit_add_to_debug(str);
 }
 
 void SimulationThread::start_simulation()
@@ -87,13 +73,9 @@ void SimulationThread::run()
       simulator_.reset();
     }
     if (request & (RUN | STEP)) {
-      simulator_.cycle();
+      QString debug_output = QString::fromStdString(simulator_.cycle());
+      emit post_cycle(debug_output);
       msleep(50);
     }
   }
-}
-
-void SimulationThread::emit_add_to_debug(const QString& str)
-{
-  emit add_to_debug(str);
 }

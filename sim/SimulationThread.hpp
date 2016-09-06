@@ -18,17 +18,12 @@ public:
    * @brief ~SimulationThread kills the thread
    */
   ~SimulationThread();
-  /**
-   * @brief debug_output sends a string to the debug output view
-   * @param str the string that should be displayed
-   */
-  static void debug_output(const QString& str);
 signals:
   /**
-   * @brief add_to_debug is emitted when debug_output is called
-   * @param str a string
+   * @brief post_cycle is emitted after a complete cycle has been simulated
+   * @param debug_output the debug output of that cycle
    */
-  void add_to_debug(const QString& str);
+  void post_cycle(const QString& debug_output);
 public slots:
   /**
    * @brief start_simulation starts continuous simulation
@@ -71,13 +66,6 @@ private:
     /// return from the thread
     TERMINATE = 1 << 4
   };
-  /**
-   * @brief emit_add_to_debug emits an add_to_debug signal
-   * @param str the string that is a parameter to the signal
-   */
-  void emit_add_to_debug(const QString& str);
-  /// the (only) instance of this class
-  static SimulationThread* instance_;
   /// the actual simulator
   Simulator simulator_;
   /// a mutex to ensure mutual exclusion for the request
