@@ -24,7 +24,7 @@ void name##_execute(name##_t* self);
 
 #if defined TARGET_SIMULATOR
 void debug_output(const char* fmt, ...);
-#define DEBUG_OUTPUT(...) debug_output(__VA_ARGS__)
+#define DEBUG_PRINT(...) debug_output(__VA_ARGS__)
 #else
-#define DEBUG_OUTPUT(...)
+#define DEBUG_PRINT(...)
 #endif

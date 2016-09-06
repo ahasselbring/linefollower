@@ -19,7 +19,7 @@ MODULE_INIT(motor_control)
 static void controller(signed int reference, signed int state, unsigned char* left, unsigned char* right)
 {
   signed int error = reference - state;
-  DEBUG_OUTPUT("MC: e = %d\n", error);
+  DEBUG_PRINT("MC: e = %d\n", error);
   // P controller
   if (Kl * error > 75) {
     *left = 255;
@@ -35,7 +35,7 @@ static void controller(signed int reference, signed int state, unsigned char* le
   } else {
     *right = 180 + Kr * error;
   }
-  DEBUG_OUTPUT("MC: u = [ %d %d ]\n", *left, *right);
+  DEBUG_PRINT("MC: u = [ %d %d ]\n", *left, *right);
 }
 
 MODULE_EXECUTE(motor_control)

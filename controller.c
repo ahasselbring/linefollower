@@ -23,7 +23,7 @@ DECLARE_MODULE_GET(control)
 
 void controller_execute(controller_t* self)
 {
-  DEBUG_OUTPUT("\n-+~+- Start of controller execution -+~+-\n");
+  DEBUG_PRINT("\n-+~+- Start of controller execution -+~+-\n");
   // get sensor data
   self->get_line_data(global_get_line());
   // execute all modules in the correct order
@@ -39,7 +39,6 @@ int controller_init(controller_t* self, void (*get_line_data)(), void (*set_moto
 {
   // initialize hardware interface
   if (get_line_data == (void*)0 || set_motor_data == (void*)0) {
-    DEBUG_OUTPUT("C: get_line_data or set_motor_data is NULL.\n");
     return -1;
   }
   self->get_line_data = get_line_data;
