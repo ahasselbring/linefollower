@@ -32,6 +32,7 @@ void Environment::load(const std::string& path, SimulatorLoadBundle& bundle)
   f.close();
   bundle.initial_pose = initial_pose_;
   bundle.lines = lines_;
+  bundle.line_width = line_width_;
 }
 
 float Environment::get_brightness(const Point2D& position) const

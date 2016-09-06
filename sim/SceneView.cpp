@@ -14,8 +14,7 @@ void SceneView::paintEvent(QPaintEvent*)
   QPainter painter(this);
   painter.fillRect(QRect(0, 0, width() - 1, height() - 1), Qt::white);
   QPen pen(Qt::black);
-  // TODO: Get line width from environment.
-  pen.setWidth(0.02 * scale_);
+  pen.setWidth(line_width_ * scale_);
   painter.setPen(pen);
   for (auto& line : lines_) {
     // TODO: Check if this is really correct.
@@ -78,6 +77,7 @@ void SceneView::post_load(const SimulatorLoadBundle& bundle)
 {
   initial_pose_ = bundle.initial_pose;
   lines_ = bundle.lines;
+  line_width_ = bundle.line_width;
   update();
 }
 

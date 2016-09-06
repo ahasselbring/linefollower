@@ -64,6 +64,8 @@ private:
   Pose2D initial_pose_;
   /// the black lines on the floor
   std::vector<Line2D> lines_;
+  /// the width of a line
+  float line_width_;
   /// the pixel coordinates of the global coordinate system origin relative to the center of the widget
   QPoint origin_;
   /// scale factor: pixel coordinate = scale_ * global coordinate

@@ -11,6 +11,8 @@ struct SimulatorLoadBundle {
   Pose2D initial_pose;
   /// the lines on the floor
   std::vector<Line2D> lines;
+  /// the width of a line [m]
+  float line_width;
 };
 
 Q_DECLARE_METATYPE(SimulatorLoadBundle)
