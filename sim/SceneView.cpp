@@ -13,6 +13,14 @@ void SceneView::paintEvent(QPaintEvent*)
 {
   QPainter painter(this);
   painter.fillRect(QRect(0, 0, width() - 1, height() - 1), Qt::white);
+  QPen pen(Qt::black);
+  // TODO: Get line width from environment.
+  pen.setWidth(0.02 * scale_);
+  painter.setPen(pen);
+  for (auto& line : lines_) {
+    // TODO: Check if this is really correct.
+    painter.drawLine(global_to_pixel(line.p1), global_to_pixel(line.p2));
+  }
   painter.fillRect(QRect(global_to_pixel(robot_pose_.position) - QPoint(5, 5), QSize(10, 10)), Qt::red);
 }
 
