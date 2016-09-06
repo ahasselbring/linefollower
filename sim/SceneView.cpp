@@ -25,7 +25,9 @@ void SceneView::paintEvent(QPaintEvent*)
   // TODO: Get robot / pixmap dimensions from somewhere else
   QSize pixel_size(0.122 * scale_, 0.117 * scale_);
   QPoint origin_in_pixmap(0.061 * scale_, 0.093 * scale_);
-  QRect robot_rect(global_to_pixel(robot_pose_.position) - origin_in_pixmap, pixel_size);
+  QRect robot_rect(-origin_in_pixmap, pixel_size);
+  painter.translate(global_to_pixel(robot_pose_.position));
+  painter.rotate(-robot_pose_.heading * 180 / M_PI);
   painter.drawPixmap(robot_rect, robot_pixmap_);
 }
 
