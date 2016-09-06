@@ -27,6 +27,7 @@ set(SIM_SOURCES
   sim/DebugView.cpp
   sim/main.cpp
   sim/MainWindow.cpp
+  sim/PropertyView.cpp
   sim/SceneView.cpp
   sim/SimulationThread.cpp
   sim/Simulator.cpp
@@ -35,6 +36,7 @@ set(SIM_SOURCES
 set(SIM_HEADERS
   sim/DebugView.hpp
   sim/MainWindow.hpp
+  sim/PropertyView.hpp
   sim/SceneView.hpp
   sim/SimulationThread.hpp
   sim/Simulator.hpp

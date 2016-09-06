@@ -5,6 +5,7 @@
 #include <QMenu>
 
 #include "DebugView.hpp"
+#include "PropertyView.hpp"
 #include "SceneView.hpp"
 #include "SimulationThread.hpp"
 
@@ -35,7 +36,7 @@ private:
   /// a view where debug messages from the modules are printed
   DebugView* debug_view_;
   /// a view where properties of the scene can be inspected and edited
-  QPlainTextEdit* property_view_;
+  PropertyView* property_view_;
   /// the menu of the views
   QMenu* view_menu_;
   /// the thread in which the simulation happens

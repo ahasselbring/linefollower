@@ -80,7 +80,7 @@ void MainWindow::create_dock_windows()
 
   dock = new QDockWidget(tr("Properties"), this);
   dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-  property_view_ = new QPlainTextEdit(dock);
+  property_view_ = new PropertyView(dock);
   dock->setWidget(property_view_);
   addDockWidget(Qt::RightDockWidgetArea, dock);
   view_menu_->addAction(dock->toggleViewAction());

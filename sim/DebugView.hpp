@@ -7,6 +7,7 @@ class DebugView : public QPlainTextEdit {
 public:
   /**
    * @brief DebugView initializes members
+   * @param parent the parent widget
    */
   DebugView(QWidget* parent = 0);
 public slots:
