@@ -26,4 +26,8 @@ protected:
 private:
   /// the current pose of the robot
   Pose2D robot_pose_;
+  // the global coordinates that represent the center of the view
+  Point2D center_;
+  // scale factor: pixel coordinate = scale_ * global coordinate
+  float scale_;
 };
