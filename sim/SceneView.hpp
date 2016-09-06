@@ -23,6 +23,12 @@ protected:
    * @brief paintEvent is called when the widget is painted
    */
   void paintEvent(QPaintEvent*) Q_DECL_OVERRIDE;
+#ifndef QT_NO_WHEELEVENT
+  /**
+   * @brief wheelEvent is called when the mouse wheel moves above the widget
+   */
+  void wheelEvent(QWheelEvent*) Q_DECL_OVERRIDE;
+#endif
 private:
   /// the current pose of the robot
   Pose2D robot_pose_;

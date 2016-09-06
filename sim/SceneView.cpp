@@ -1,4 +1,5 @@
 #include <QPainter>
+#include <QWheelEvent>
 
 #include "SceneView.hpp"
 
@@ -17,8 +18,21 @@ void SceneView::paintEvent(QPaintEvent*)
   painter.fillRect(QRect(pixel_x - 5, pixel_y - 5, 10, 10), Qt::red);
 }
 
+#ifndef QT_NO_WHEELEVENT
+void SceneView::wheelEvent(QWheelEvent* event)
+{
+  scale_ += event->delta();
+  if (scale_ < 50.f) {
+    scale_ = 50.f;
+  } else if (scale_ > 10000.f) {
+    scale_ = 10000.f;
+  }
+  update();
+}
+#endif
+
 void SceneView::post_cycle(const SimulatorCycleBundle& bundle)
 {
   robot_pose_ = bundle.robot_pose;
-  repaint();
+  update();
 }
