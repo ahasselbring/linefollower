@@ -96,7 +96,7 @@ private:
    */
   void debug_print(const std::string& str);
   /// the x coordinate of the line sensors in robot coordinates [m]
-  static constexpr float line_sensor_x_ = 0.1;
+  static constexpr float line_sensor_x_ = 0.08;
   /// the absolute value of the y coordinate of the line sensors in robot coordinates [m]
   static constexpr float line_sensor_y_abs_ = 0.01;
   /// the absolute value of the y coordinate of the wheels [m] - the x coordinate is 0 by definition
