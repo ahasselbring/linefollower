@@ -5,6 +5,7 @@
 
 SceneView::SceneView(QWidget* parent) :
   QWidget(parent),
+  line_width_(0.01),
   robot_pixmap_(":/Images/Robot.png"),
   scale_(300.f)
 {
