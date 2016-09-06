@@ -29,6 +29,8 @@ MainWindow::MainWindow(QWidget* parent) :
     scene_view_, SLOT(post_load(const SimulatorLoadBundle&)), Qt::QueuedConnection);
   connect(&simulation_thread_, SIGNAL(post_reset()),
     scene_view_, SLOT(post_reset()), Qt::QueuedConnection);
+  connect(&simulation_thread_, SIGNAL(post_reset()),
+    debug_view_, SLOT(post_reset()), Qt::QueuedConnection);
 }
 
 void MainWindow::create_actions()

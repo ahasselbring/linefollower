@@ -13,3 +13,8 @@ void DebugView::post_cycle(const SimulatorCycleBundle& bundle)
   insertPlainText(QString::fromStdString(bundle.debug_output));
   moveCursor(QTextCursor::End);
 }
+
+void DebugView::post_reset()
+{
+  clear();
+}

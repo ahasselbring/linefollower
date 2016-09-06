@@ -18,4 +18,8 @@ public slots:
    * @param bundle a set of data about the state of the simulation
    */
   void post_cycle(const SimulatorCycleBundle& bundle);
+  /**
+   * @brief post_reset clears the text
+   */
+  void post_reset();
 };
