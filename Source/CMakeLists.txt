@@ -24,6 +24,8 @@ set(HEADERS
 )
 
 set(SIM_SOURCES
+  sim/Core/Environment.cpp
+  sim/Core/Robot.cpp
   sim/DebugView.cpp
   sim/main.cpp
   sim/MainWindow.cpp
@@ -34,6 +36,8 @@ set(SIM_SOURCES
 )
 
 set(SIM_HEADERS
+  sim/Core/Environment.hpp
+  sim/Core/Robot.hpp
   sim/DebugView.hpp
   sim/MainWindow.hpp
   sim/PropertyView.hpp
