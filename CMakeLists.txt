@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.1)
-project(line)
+project(linefollower)
 
 set(SOURCES
   controller.c
@@ -68,12 +68,12 @@ if(SIM)
   set(CMAKE_AUTORCC ON)
   find_package(Qt5Widgets REQUIRED)
 
-  add_executable(line ${SOURCES} ${HEADERS} ${SIM_SOURCES} ${SIM_HEADERS} ${SIM_RESOURCES})
-  target_link_libraries(line m)
-  target_link_libraries(line Qt5::Widgets)
+  add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS} ${SIM_SOURCES} ${SIM_HEADERS} ${SIM_RESOURCES})
+  target_link_libraries(${PROJECT_NAME} m)
+  target_link_libraries(${PROJECT_NAME} Qt5::Widgets)
 elseif(ROBOT)
   add_definitions(-DTARGET_ROBOT)
-  add_executable(line ${SOURCES} ${HEADERS} ${ROBOT_SOURCES} ${ROBOT_HEADERS})
+  add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS} ${ROBOT_SOURCES} ${ROBOT_HEADERS})
 else()
   message(FATAL_ERROR "You need to define a target.")
 endif()
