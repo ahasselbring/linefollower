@@ -29,6 +29,8 @@ void Robot::reset()
   std::lock_guard<std::mutex> lg(mutex_);
   controller_init(&controller_, &Robot::get_line_data_wrap, &Robot::set_motor_data_wrap);
   pose_ = environment_.get_initial_pose();
+  left_motor_.reset();
+  right_motor_.reset();
   left_speed_request_ = right_speed_request_ = 0;
   left_mode_request_ = right_mode_request_ = MOTOR_OFF;
   debug_output_.clear();
@@ -42,19 +44,20 @@ void Robot::cycle(const float dt, SimulatorCycleBundle& bundle)
   // During this call is the only time that debug_print, get_line_data_wrap and set_motor_data_wrap can be called.
   controller_execute(&controller_);
   // Simulate the dynamics of the robot for a specific time interval.
-  float left_speed_real = motor_speed_factor_ * static_cast<float>(left_speed_request_) / 255;
-  float right_speed_real = motor_speed_factor_ * static_cast<float>(right_speed_request_) / 255;
+  float left_voltage = motor_voltage_ * static_cast<float>(left_speed_request_) / 255;
+  float right_voltage = motor_voltage_ * static_cast<float>(right_speed_request_) / 255;
   if (left_mode_request_ == MOTOR_BACKWARD) {
-    left_speed_real = -left_speed_real;
+    left_voltage = -left_voltage;
   } else if (left_mode_request_ != MOTOR_FORWARD) {
-    left_speed_real = 0;
+    left_voltage = 0;
   }
   if (right_mode_request_ == MOTOR_BACKWARD) {
-    right_speed_real = -right_speed_real;
+    right_voltage = -right_voltage;
   } else if (right_mode_request_ != MOTOR_FORWARD) {
-    right_speed_real = 0;
+    right_voltage = 0;
   }
-  // TODO: simulate inertia of the motors, friction and some other real physics, i.e. modify *_speed_real
+  const float left_speed_real = wheel_radius_ * left_motor_.cycle(dt, left_voltage);
+  const float right_speed_real = wheel_radius_ * right_motor_.cycle(dt, right_voltage);
   const float s = std::sin(pose_.heading), c = std::cos(pose_.heading);
   const float moved_distance = dt * (left_speed_real + right_speed_real) / 2;
   pose_.position.x += c * moved_distance;

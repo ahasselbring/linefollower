@@ -11,6 +11,7 @@ extern "C" {
 #include "sim/Types.hpp"
 
 #include "Environment.hpp"
+#include "Motor.hpp"
 
 class Robot {
 public:
@@ -70,9 +71,11 @@ private:
   /// the absolute value of the y coordinate of the line sensors in robot coordinates [m]
   static constexpr float line_sensor_y_abs_ = 0.01;
   /// the absolute value of the y coordinate of the wheels [m] - the x coordinate is 0 by definition
-  static constexpr float wheel_y_abs_ = 0.05;
-  /// the speed of a wheel at full speed [m/s]
-  static constexpr float motor_speed_factor_ = 0.05;
+  static constexpr float wheel_y_abs_ = 0.0525;
+  /// the radius of the wheels
+  static constexpr float wheel_radius_ = 0.019;
+  /// the maximal input voltage of the motors [V]
+  static constexpr float motor_voltage_ = 5;
   /// the black value of the line sensors
   static constexpr float line_sensor_black_value_ = 800;
   /// the white value of the line sensors
@@ -85,6 +88,10 @@ private:
   controller_t controller_;
   /// the current pose of the robot in world coordinates [m,rad]
   Pose2D pose_;
+  /// a simulation of a motor for the left motor
+  Motor left_motor_;
+  /// a simulation of a motor for the right motor
+  Motor right_motor_;
   /// the desired speed of the left motor
   unsigned char left_speed_request_;
   /// the desired speed of the right motor
