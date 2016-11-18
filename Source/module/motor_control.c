@@ -35,7 +35,7 @@ static void controller(motor_control_t* self, signed int reference, signed int s
   self->last_error = error;
   // PID controller
   signed int left_ctrl = Kl * error + Kl * self->integral / Ti + Kl * derivative * Td;
-  if (left_ctrl > 75) {
+  if (left_ctrl > (255 - CObias)) {
     self->control->left = 255;
   } else if (left_ctrl < -CObias) {
     self->control->left = 0;
@@ -43,7 +43,7 @@ static void controller(motor_control_t* self, signed int reference, signed int s
     self->control->left = CObias + left_ctrl;
   }
   signed int right_ctrl = Kr * error + Kr * self->integral / Ti + Kr * derivative * Td;
-  if (right_ctrl > 75) {
+  if (right_ctrl > (255 - CObias)) {
     self->control->right = 255;
   } else if (right_ctrl < -CObias) {
     self->control->right = 0;
