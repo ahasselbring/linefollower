@@ -25,7 +25,7 @@ private:
   /// motor armature resistance [Ohm]
   static constexpr float R_ = 16;
   /// motor shaft inertia [kg*m^2]
-  static constexpr float J_ = 3.9e-6;
+  static constexpr float J_ = 1.2e-7;
   /// current angular velocity of the motor [rad/s]
   float omega_;
 };
